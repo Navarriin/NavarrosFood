@@ -1,5 +1,6 @@
 package com.navarro.food.navarrosfood.services.impl;
 
+import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
@@ -24,5 +25,12 @@ public class ServiceFoodImpl implements ServiceFood {
     public List<FoodResponse> listAllFoods() {
         return repositoryFood.findAll()
                 .stream().map(mapper::toResponse).collect(Collectors.toList());
+    }
+
+    @Override
+    public FoodResponse getFoodById(Long id) {
+        return mapper.toResponse(
+                repositoryFood.getFoodById(id)
+                        .orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!")));
     }
 }

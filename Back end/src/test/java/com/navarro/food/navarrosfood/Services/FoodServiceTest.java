@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.Services;
+package com.navarro.food.navarrosfood.services;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
