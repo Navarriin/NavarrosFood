@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,5 +52,15 @@ public class FoodServiceTest {
         assertNotNull(result);
         assertFalse(result.isEmpty());
         assertEquals(List.of(response), result);
+    }
+
+    @Test
+    void getFoodById() {
+        when(this.repositoryFood.getFoodById(anyLong())).thenReturn(food);
+        when(this.mapper.toResponse(food)).thenReturn(response);
+
+        var result = assertDoesNotThrow(() -> this.serviceFood.getFoodById(anyLong()));
+        assertNotNull(result);
+        assertEquals(response, result);
     }
 }
