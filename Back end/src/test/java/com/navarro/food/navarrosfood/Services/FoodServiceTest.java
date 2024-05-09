@@ -1,5 +1,6 @@
 package com.navarro.food.navarrosfood.Services;
 
+import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.model.FoodEntity;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -55,12 +57,21 @@ public class FoodServiceTest {
     }
 
     @Test
-    void getFoodById() {
-        when(this.repositoryFood.getFoodById(anyLong())).thenReturn(food);
+    void getFoodByIdSuccess() {
+        when(this.repositoryFood.getFoodById(anyLong())).thenReturn(Optional.of(food));
         when(this.mapper.toResponse(food)).thenReturn(response);
 
         var result = assertDoesNotThrow(() -> this.serviceFood.getFoodById(anyLong()));
         assertNotNull(result);
         assertEquals(response, result);
+    }
+
+    @Test
+    void getFoodByIdError() {
+        when(this.repositoryFood.getFoodById(anyLong())).thenReturn(Optional.empty());
+        when(this.mapper.toResponse(food)).thenReturn(response);
+
+        var result = assertThrows(FoodNotFound.class, () -> this.serviceFood.getFoodById(anyLong()));
+        assertEquals("Food with id" + anyLong() + " not found!", result.getMessage());
     }
 }
