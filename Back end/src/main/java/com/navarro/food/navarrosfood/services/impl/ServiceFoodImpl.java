@@ -1,6 +1,7 @@
 package com.navarro.food.navarrosfood.services.impl;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
+import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
@@ -32,5 +33,10 @@ public class ServiceFoodImpl implements ServiceFood {
         return mapper.toResponse(
                 repositoryFood.getFoodById(id)
                         .orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!")));
+    }
+
+    @Override
+    public FoodResponse createFood(FoodRequest request) {
+        return this.mapper.toResponse(repositoryFood.save(this.mapper.toEntity(request)));
     }
 }

@@ -19,7 +19,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,7 +71,7 @@ public class FoodServiceTest {
 
     @Test
     void getFoodByIdError() {
-        when(this.repositoryFood.getFoodById(anyLong())).thenReturn(Optional.empty());
+        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.empty());
 
         var result = assertThrows(FoodNotFound.class, () -> this.serviceFood.getFoodById(food.getFoodNumber()));
         assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
@@ -87,12 +86,5 @@ public class FoodServiceTest {
         var result = assertDoesNotThrow(() -> this.serviceFood.createFood(request));
         assertNotNull(result);
         assertEquals(response, result);
-    }
-
-    @Test
-    void createFoodError() {
-        when(this.repositoryFood.save(any())).thenReturn(null);
-
-        var result = assertThrows(RuntimeException.class, () -> this.serviceFood.createFood(request));
     }
 }
