@@ -1,6 +1,7 @@
 package com.navarro.food.navarrosfood.services;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
+import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.model.FoodEntity;
@@ -18,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,12 +38,14 @@ public class FoodServiceTest {
     private ServiceFoodImpl serviceFood;
 
     private static FoodEntity food;
+    private static FoodRequest request;
     private static FoodResponse response;
 
 
     @BeforeAll
     static void setUp(){
         food = Utils.initFoodEntity();
+        request = Utils.initRequest();
         response = Utils.initResponse();
     }
 
@@ -69,9 +73,26 @@ public class FoodServiceTest {
     @Test
     void getFoodByIdError() {
         when(this.repositoryFood.getFoodById(anyLong())).thenReturn(Optional.empty());
+
+        var result = assertThrows(FoodNotFound.class, () -> this.serviceFood.getFoodById(food.getFoodNumber()));
+        assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
+    }
+
+    @Test
+    void createFoodSuccess() {
+        when(this.mapper.toEntity(request)).thenReturn(food);
+        when(this.repositoryFood.save(food)).thenReturn(food);
         when(this.mapper.toResponse(food)).thenReturn(response);
 
-        var result = assertThrows(FoodNotFound.class, () -> this.serviceFood.getFoodById(anyLong()));
-        assertEquals("Food with id" + anyLong() + " not found!", result.getMessage());
+        var result = assertDoesNotThrow(() -> this.serviceFood.createFood(request));
+        assertNotNull(result);
+        assertEquals(response, result);
+    }
+
+    @Test
+    void createFoodError() {
+        when(this.repositoryFood.save(any())).thenReturn(null);
+
+        var result = assertThrows(RuntimeException.class, () -> this.serviceFood.createFood(request));
     }
 }

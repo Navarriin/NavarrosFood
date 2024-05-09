@@ -1,5 +1,6 @@
 package com.navarro.food.navarrosfood.utils;
 
+import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.FoodEntity;
 
@@ -13,5 +14,9 @@ public class Utils {
 
     public static FoodEntity initFoodEntity() {
         return new FoodEntity("FoodTest", "Descrição da imagem aqui", "Link da imagem aqui", new BigDecimal(30));
+    }
+
+    public static FoodRequest initRequest() {
+        return new FoodRequest("FoodTest", "Descrição da imagem aqui", "Link da imagem aqui", new BigDecimal(30));
     }
 }
