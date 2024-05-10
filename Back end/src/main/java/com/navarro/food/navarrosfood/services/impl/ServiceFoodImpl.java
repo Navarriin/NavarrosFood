@@ -51,7 +51,7 @@ public class ServiceFoodImpl implements ServiceFood {
                     food.setImage(request.image());
                     food.setValue(request.value());
                     return mapper.toResponse(food);
-                }).orElseThrow(() -> new ViolationException("Violarion error!"));
+                }).orElseThrow(() -> new ViolationException("Violation error!"));
     }
 
     @Override

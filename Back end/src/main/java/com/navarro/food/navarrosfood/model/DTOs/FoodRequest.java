@@ -11,7 +11,7 @@ public record FoodRequest(
         @NotNull @NotBlank @Size(min = 3,max = 60) String name,
         @NotNull @NotBlank @Size(max = 300) String description,
         @NotNull @NotBlank String image,
-        @NotNull @NotBlank BigDecimal value) {
+        @NotNull BigDecimal value) {
 
     public FoodRequest(FoodEntity entity) {
         this(entity.getName(), entity.getDescription(), entity.getImage(), entity.getValue());

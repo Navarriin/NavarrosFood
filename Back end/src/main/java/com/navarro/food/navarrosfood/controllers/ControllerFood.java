@@ -26,7 +26,7 @@ public class ControllerFood {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FoodResponse> getFoodById(Long id) {
+    public ResponseEntity<FoodResponse> getFoodById(@PathVariable Long id) {
         return ResponseEntity.ok().body(this.serviceFood.getFoodById(id));
     }
 
