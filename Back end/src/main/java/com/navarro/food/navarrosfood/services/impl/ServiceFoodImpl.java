@@ -56,7 +56,7 @@ public class ServiceFoodImpl implements ServiceFood {
 
     @Override
     public void deleteFoodById(Long id) {
-        repositoryFood.delete(repositoryFood.findById(id)
+        repositoryFood.delete(repositoryFood.getFoodById(id)
                 .orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!")));
     }
 }

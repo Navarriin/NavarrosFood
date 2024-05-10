@@ -123,7 +123,7 @@ public class FoodServiceTest {
     @Test
     @DisplayName("Teste de sucesso ao deletar uma comida")
     void deleteFoodSuccess() {
-        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.ofNullable(food));
+        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.of(food));
 
         assertDoesNotThrow(() -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
 
