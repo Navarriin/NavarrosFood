@@ -4,11 +4,13 @@ import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
+import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,5 +40,17 @@ public class ServiceFoodImpl implements ServiceFood {
     @Override
     public FoodResponse createFood(FoodRequest request) {
         return this.mapper.toResponse(repositoryFood.save(this.mapper.toEntity(request)));
+    }
+
+    @Override
+    public FoodResponse updateFood(Long id, FoodRequest request) {
+        FoodEntity foodById = repositoryFood.getFoodById(id).orElseThrow();
+
+        foodById.setName(request.name());
+        foodById.setDescription(request.description());
+        foodById.setImage(request.image());
+        foodById.setValue(request.value());
+
+        return this.mapper.toResponse(foodById);
     }
 }

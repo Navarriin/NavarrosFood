@@ -9,4 +9,5 @@ public interface ServiceFood {
     List<FoodResponse> listAllFoods();
     FoodResponse getFoodById(Long id);
     FoodResponse createFood(FoodRequest request);
+    FoodResponse updateFood(Long id, FoodRequest request);
 }
