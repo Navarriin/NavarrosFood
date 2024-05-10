@@ -53,4 +53,13 @@ public class ServiceFoodImpl implements ServiceFood {
                     return mapper.toResponse(food);
                 }).orElseThrow(() -> new ViolationException("Violarion error!"));
     }
+
+    @Override
+    public Void deleteFoodById(Long id) {
+        Optional<FoodEntity> foodById = repositoryFood.getFoodById(id);
+
+        foodById.ifPresentOrElse(repositoryFood::delete,() -> new RuntimeException("Erro"));
+
+        return null;
+    }
 }
