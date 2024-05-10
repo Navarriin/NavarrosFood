@@ -8,6 +8,7 @@ import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.impl.ServiceFoodImpl;
 import com.navarro.food.navarrosfood.utils.Utils;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,7 +99,7 @@ public class FoodServiceTest {
     }
 
     @Test
-    @DisplayName("Teste de sucesso ao atualizar uma comida existente")
+    @DisplayName("Teste de sucesso ao atualizar comida existente")
     void updateFoodSuccess() {
         when(this.mapper.toResponse(food)).thenReturn(response);
         when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.ofNullable(food));
@@ -106,5 +107,16 @@ public class FoodServiceTest {
         assertDoesNotThrow(() -> this.serviceFood.updateFood(food.getFoodNumber(), request));
 
         verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber());
+    }
+
+    @Test
+    @DisplayName("Teste de erro ao atualizar comida existente")
+    void updateFoodError() {
+        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.empty());
+
+        var result = assertThrows(ViolationException.class,
+                () -> this.serviceFood.updateFood(food.getFoodNumber(), request));
+
+        assertEquals("Violarion error!", result.getMessage());
     }
 }
