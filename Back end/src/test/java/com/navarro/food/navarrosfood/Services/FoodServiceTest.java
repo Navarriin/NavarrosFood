@@ -119,4 +119,15 @@ public class FoodServiceTest {
 
         assertEquals("Violarion error!", result.getMessage());
     }
+
+    @Test
+    @DisplayName("Teste de sucesso ao deletar uma comida")
+    void deleteFoodSuccess() {
+        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.ofNullable(food));
+
+        var result = assertDoesNotThrow(() -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
+
+        verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber());
+        verify(repositoryFood, times(1)).delete(food);
+    }
 }
