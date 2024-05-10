@@ -39,7 +39,7 @@ public class ServiceFoodImpl implements ServiceFood {
 
     @Override
     public FoodResponse createFood(FoodRequest request) {
-        return this.mapper.toResponse(repositoryFood.save(this.mapper.toEntity(request)));
+        return mapper.toResponse(repositoryFood.save(mapper.toEntity(request)));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ServiceFoodImpl implements ServiceFood {
                     food.setDescription(request.description());
                     food.setImage(request.image());
                     food.setValue(request.value());
-                    return this.mapper.toResponse(food);
+                    return mapper.toResponse(food);
                 }).orElseThrow(RuntimeException::new);
     }
 }
