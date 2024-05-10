@@ -8,6 +8,8 @@ import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,12 +48,16 @@ public class ServiceFoodImpl implements ServiceFood {
     @Override
     public FoodResponse updateFood(Long id, FoodRequest request) {
         return repositoryFood.getFoodById(id).map(food -> {
-                    food.setName(request.name());
-                    food.setDescription(request.description());
-                    food.setImage(request.image());
-                    food.setValue(request.value());
-                    return mapper.toResponse(food);
-                }).orElseThrow(() -> new ViolationException("Violation error!"));
+                   try {
+                       food.setName(request.name());
+                       food.setDescription(request.description());
+                       food.setImage(request.image());
+                       food.setValue(request.value());
+                       return mapper.toResponse(food);
+                   } catch (ConstraintViolationException exception) {
+                       throw new ValidationException(exception);
+                   }
+                }).orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!"));
     }
 
     @Override

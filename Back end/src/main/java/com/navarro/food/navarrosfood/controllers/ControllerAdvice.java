@@ -1,5 +1,6 @@
 package com.navarro.food.navarrosfood.controllers;
 
+import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.exception.message.DefaultMessage;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
     private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
+    private final HttpStatus NOT_FOUND = HttpStatus.NOT_FOUND;
+
+    @ExceptionHandler(FoodNotFound.class)
+    public ResponseEntity<DefaultMessage> foodNotFoundExceptionHandler(FoodNotFound exception) {
+        return ResponseEntity.status(NOT_FOUND).body(new DefaultMessage(NOT_FOUND, exception.getMessage()));
+    }
 
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<DefaultMessage> validationExceptionHandler(ValidationException exception) {
