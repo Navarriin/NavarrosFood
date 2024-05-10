@@ -13,15 +13,17 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "food")
+@Table(name = "foods")
 public class FoodEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long foodNumber;
     private String name;
     private String description;
     private String image;
+    @Column(name = "value_food")
     private BigDecimal value;
 
     public FoodEntity(String name, String description, String image, BigDecimal value) {
