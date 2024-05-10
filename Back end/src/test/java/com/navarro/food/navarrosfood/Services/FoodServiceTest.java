@@ -100,14 +100,11 @@ public class FoodServiceTest {
     @Test
     @DisplayName("Teste de sucesso ao atualizar uma comida existente")
     void updateFoodSuccess() {
-        when(this.mapper.toEntity(request)).thenReturn(food);
         when(this.mapper.toResponse(food)).thenReturn(response);
-        when(this.repositoryFood.save(food)).thenReturn(food);
         when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.ofNullable(food));
 
-        assertDoesNotThrow(() -> this.serviceFood.updateFood());
+        assertDoesNotThrow(() -> this.serviceFood.updateFood(food.getFoodNumber(), request));
 
         verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber());
-
     }
 }
