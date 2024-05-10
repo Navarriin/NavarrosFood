@@ -44,13 +44,12 @@ public class ServiceFoodImpl implements ServiceFood {
 
     @Override
     public FoodResponse updateFood(Long id, FoodRequest request) {
-        FoodEntity foodById = repositoryFood.getFoodById(id).orElseThrow();
-
-        foodById.setName(request.name());
-        foodById.setDescription(request.description());
-        foodById.setImage(request.image());
-        foodById.setValue(request.value());
-
-        return this.mapper.toResponse(foodById);
+        return repositoryFood.getFoodById(id).map(food -> {
+                    food.setName(request.name());
+                    food.setDescription(request.description());
+                    food.setImage(request.image());
+                    food.setValue(request.value());
+                    return this.mapper.toResponse(food);
+                }).orElseThrow(RuntimeException::new);
     }
 }
