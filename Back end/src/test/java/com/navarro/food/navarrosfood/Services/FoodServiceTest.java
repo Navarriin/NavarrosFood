@@ -125,9 +125,19 @@ public class FoodServiceTest {
     void deleteFoodSuccess() {
         when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.ofNullable(food));
 
-        var result = assertDoesNotThrow(() -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
+        assertDoesNotThrow(() -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
 
         verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber());
         verify(repositoryFood, times(1)).delete(food);
+    }
+
+    @Test
+    @DisplayName("Teste de erro ao deletar comida")
+    void deleteFoodError() {
+
+        var result = assertThrows(FoodNotFound.class,
+                () -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
+
+        assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
     }
 }

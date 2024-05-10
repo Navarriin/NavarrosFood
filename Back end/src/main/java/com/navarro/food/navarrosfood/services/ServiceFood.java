@@ -10,5 +10,5 @@ public interface ServiceFood {
     FoodResponse getFoodById(Long id);
     FoodResponse createFood(FoodRequest request);
     FoodResponse updateFood(Long id, FoodRequest request);
-    Void deleteFoodById(Long id);
+    void deleteFoodById(Long id);
 }

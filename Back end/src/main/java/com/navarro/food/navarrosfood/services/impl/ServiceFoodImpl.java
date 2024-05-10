@@ -55,11 +55,8 @@ public class ServiceFoodImpl implements ServiceFood {
     }
 
     @Override
-    public Void deleteFoodById(Long id) {
-        Optional<FoodEntity> foodById = repositoryFood.getFoodById(id);
-
-        foodById.ifPresentOrElse(repositoryFood::delete,() -> new RuntimeException("Erro"));
-
-        return null;
+    public void deleteFoodById(Long id) {
+        repositoryFood.delete(repositoryFood.findById(id)
+                .orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!")));
     }
 }
