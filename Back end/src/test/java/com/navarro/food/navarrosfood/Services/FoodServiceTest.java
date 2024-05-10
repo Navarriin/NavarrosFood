@@ -117,7 +117,7 @@ public class FoodServiceTest {
         var result = assertThrows(ViolationException.class,
                 () -> this.serviceFood.updateFood(food.getFoodNumber(), request));
 
-        assertEquals("Violarion error!", result.getMessage());
+        assertEquals("Violation error!", result.getMessage());
     }
 
     @Test

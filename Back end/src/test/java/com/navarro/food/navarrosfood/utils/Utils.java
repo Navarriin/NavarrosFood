@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class Utils {
 
     public static FoodResponse initResponse() {
-        return new FoodResponse("FoodTest", "Descrição da imagem aqui", "Link da imagem aqui", new BigDecimal(30));
+        return new FoodResponse(1L, "FoodTest", "Descrição da imagem aqui", "Link da imagem aqui", new BigDecimal(30));
     }
 
     public static FoodEntity initFoodEntity() {
