@@ -1,11 +1,9 @@
 package com.navarro.food.navarrosfood.services.impl;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
-import com.navarro.food.navarrosfood.exception.ViolationException;
 import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
-import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import jakarta.validation.ConstraintViolationException;
@@ -13,7 +11,6 @@ import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,40 +26,44 @@ public class ServiceFoodImpl implements ServiceFood {
 
     @Override
     public List<FoodResponse> listAllFoods() {
-        return repositoryFood.findAll()
-                .stream().map(mapper::toResponse).collect(Collectors.toList());
+        return this.repositoryFood.findAll()
+                .stream().map(this.mapper::toResponse).collect(Collectors.toList());
     }
 
     @Override
     public FoodResponse getFoodById(Long id) {
-        return mapper.toResponse(
-                repositoryFood.getFoodById(id)
-                        .orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!")));
+        return this.mapper.toResponse(
+                this.repositoryFood.getFoodById(id)
+                       .orElseThrow(() -> this.initFoodNotFoundById(id)));
     }
 
     @Override
     public FoodResponse createFood(FoodRequest request) {
-        return mapper.toResponse(repositoryFood.save(mapper.toEntity(request)));
+        return this.mapper.toResponse(this.repositoryFood.save(this.mapper.toEntity(request)));
     }
 
     @Override
     public FoodResponse updateFood(Long id, FoodRequest request) {
-        return repositoryFood.getFoodById(id).map(food -> {
+        return this.repositoryFood.getFoodById(id).map(food -> {
                    try {
                        food.setName(request.name());
                        food.setDescription(request.description());
                        food.setImage(request.image());
                        food.setValue(request.value());
-                       return mapper.toResponse(food);
+                       return this.mapper.toResponse(food);
                    } catch (ConstraintViolationException exception) {
                        throw new ValidationException(exception);
                    }
-                }).orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!"));
+                }).orElseThrow(() -> this.initFoodNotFoundById(id));
     }
 
     @Override
     public void deleteFoodById(Long id) {
-        repositoryFood.delete(repositoryFood.getFoodById(id)
-                .orElseThrow(() -> new FoodNotFound("Food with id " + id + " not found!")));
+        this.repositoryFood.delete(this.repositoryFood.getFoodById(id)
+                .orElseThrow(() -> this.initFoodNotFoundById(id)));
+    }
+
+    private FoodNotFound initFoodNotFoundById(Long id) {
+        return new FoodNotFound(String.format("Food with id %s not found", id));
     }
 }
