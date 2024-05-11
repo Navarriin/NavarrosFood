@@ -1,5 +1,7 @@
 package com.navarro.food.navarrosfood.model;
 
+import com.navarro.food.navarrosfood.model.Enums.ConverterStatus;
+import com.navarro.food.navarrosfood.model.Enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +25,12 @@ public class FoodEntity {
     private String name;
     private String description;
     private String image;
+
     @Column(name = "value_food")
     private BigDecimal value;
+
+    @Convert(converter = ConverterStatus.class)
+    private Status status = Status.ACTIVE;
 
     public FoodEntity(String name, String description, String image, BigDecimal value) {
         this.name = name;

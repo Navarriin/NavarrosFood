@@ -4,13 +4,17 @@ import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
+import com.navarro.food.navarrosfood.model.Enums.Status;
+import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +30,14 @@ public class ServiceFoodImpl implements ServiceFood {
 
     @Override
     public List<FoodResponse> listAllFoods() {
-        return this.repositoryFood.findAll()
+        return this.repositoryFood.getAllActiveFoods(Status.ACTIVE)
                 .stream().map(this.mapper::toResponse).collect(Collectors.toList());
     }
 
     @Override
     public FoodResponse getFoodById(Long id) {
         return this.mapper.toResponse(
-                this.repositoryFood.getFoodById(id)
+                this.repositoryFood.getFoodById(id, Status.ACTIVE)
                        .orElseThrow(() -> this.initFoodNotFoundById(id)));
     }
 
@@ -44,7 +48,7 @@ public class ServiceFoodImpl implements ServiceFood {
 
     @Override
     public FoodResponse updateFood(Long id, FoodRequest request) {
-        return this.repositoryFood.getFoodById(id).map(food -> {
+        return this.repositoryFood.getFoodById(id, Status.ACTIVE).map(food -> {
                    try {
                        food.setName(request.name());
                        food.setDescription(request.description());
@@ -58,9 +62,14 @@ public class ServiceFoodImpl implements ServiceFood {
     }
 
     @Override
+    @Transactional
     public void deleteFoodById(Long id) {
-        this.repositoryFood.delete(this.repositoryFood.getFoodById(id)
-                .orElseThrow(() -> this.initFoodNotFoundById(id)));
+        Optional<FoodEntity> foodById = this.repositoryFood.getFoodById(id, Status.ACTIVE);
+        if(foodById.isPresent()){
+            this.repositoryFood.safeDelete(id, Status.INACTIVE);
+        } else {
+            throw this.initFoodNotFoundById(id);
+        }
     }
 
     private FoodNotFound initFoodNotFoundById(Long id) {

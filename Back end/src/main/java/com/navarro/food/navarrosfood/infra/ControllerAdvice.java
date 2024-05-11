@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.controllers;
+package com.navarro.food.navarrosfood.infra;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.exception.message.DefaultMessage;
