@@ -64,12 +64,11 @@ public class ServiceFoodImpl implements ServiceFood {
     @Override
     @Transactional
     public void deleteFoodById(Long id) {
-        Optional<FoodEntity> foodById = this.repositoryFood.getFoodById(id, Status.ACTIVE);
-        if(foodById.isPresent()){
-            this.repositoryFood.safeDelete(id, Status.INACTIVE);
-        } else {
-            throw this.initFoodNotFoundById(id);
-        }
+        this.repositoryFood.getFoodById(id, Status.ACTIVE)
+                .ifPresentOrElse(
+                        food -> this.repositoryFood.safeDelete(food.getFoodNumber(), Status.INACTIVE),
+                        () -> { throw this.initFoodNotFoundById(id); }
+                );
     }
 
     private FoodNotFound initFoodNotFoundById(Long id) {
