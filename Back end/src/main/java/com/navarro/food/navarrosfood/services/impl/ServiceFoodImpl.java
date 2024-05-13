@@ -5,7 +5,6 @@ import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.model.Enums.Status;
-import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import jakarta.transaction.Transactional;
@@ -14,7 +13,6 @@ import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,6 +70,6 @@ public class ServiceFoodImpl implements ServiceFood {
     }
 
     private FoodNotFound initFoodNotFoundById(Long id) {
-        return new FoodNotFound(String.format("Food with id %s not found", id));
+        return new FoodNotFound(String.format("Food with id %s not found!", id));
     }
 }

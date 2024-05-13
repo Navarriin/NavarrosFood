@@ -5,6 +5,7 @@ import com.navarro.food.navarrosfood.exception.ViolationException;
 import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
+import com.navarro.food.navarrosfood.model.Enums.Status;
 import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.impl.ServiceFoodImpl;
@@ -53,7 +54,7 @@ public class FoodServiceTest {
     @Test
     @DisplayName("Teste de sucesso ao solicitar lista de comidas")
     void ListAllFoods() {
-        when(this.repositoryFood.findAll()).thenReturn(List.of(food));
+        when(this.repositoryFood.getAllActiveFoods(Status.ACTIVE)).thenReturn(List.of(food));
         when(this.mapper.toResponse(food)).thenReturn(response);
 
         var result = assertDoesNotThrow(() -> this.serviceFood.listAllFoods());
@@ -66,10 +67,10 @@ public class FoodServiceTest {
     @Test
     @DisplayName("Teste de sucesso ao tentar capturar uma comida pelo id")
     void getFoodByIdSuccess() {
-        when(this.repositoryFood.getFoodById(anyLong())).thenReturn(Optional.of(food));
+        when(this.repositoryFood.getFoodById(food.getFoodNumber(), Status.ACTIVE)).thenReturn(Optional.of(food));
         when(this.mapper.toResponse(food)).thenReturn(response);
 
-        var result = assertDoesNotThrow(() -> this.serviceFood.getFoodById(anyLong()));
+        var result = assertDoesNotThrow(() -> this.serviceFood.getFoodById(food.getFoodNumber()));
 
         assertNotNull(result);
         assertEquals(response, result);
@@ -78,7 +79,7 @@ public class FoodServiceTest {
     @Test
     @DisplayName("Teste de erro ao tentar capturar uma comida pelo id")
     void getFoodByIdError() {
-        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.empty());
+        when(this.repositoryFood.getFoodById(food.getFoodNumber(), Status.ACTIVE)).thenReturn(Optional.empty());
 
         var result = assertThrows(FoodNotFound.class, () -> this.serviceFood.getFoodById(food.getFoodNumber()));
 
@@ -102,34 +103,35 @@ public class FoodServiceTest {
     @DisplayName("Teste de sucesso ao atualizar comida existente")
     void updateFoodSuccess() {
         when(this.mapper.toResponse(food)).thenReturn(response);
-        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.ofNullable(food));
+        when(this.repositoryFood.getFoodById(food.getFoodNumber(), Status.ACTIVE)).thenReturn(Optional.ofNullable(food));
 
         assertDoesNotThrow(() -> this.serviceFood.updateFood(food.getFoodNumber(), request));
 
-        verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber());
+        verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber(), Status.ACTIVE);
     }
 
     @Test
     @DisplayName("Teste de erro ao atualizar comida existente")
     void updateFoodError() {
-        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.empty());
+        when(this.repositoryFood.getFoodById(food.getFoodNumber(), Status.ACTIVE)).thenReturn(Optional.empty());
 
-        var result = assertThrows(ViolationException.class,
+        var result = assertThrows(FoodNotFound.class,
                 () -> this.serviceFood.updateFood(food.getFoodNumber(), request));
 
-        assertEquals("Violation error!", result.getMessage());
+        assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
     }
 
     @Test
     @DisplayName("Teste de sucesso ao deletar uma comida")
     void deleteFoodSuccess() {
-        when(this.repositoryFood.getFoodById(food.getFoodNumber())).thenReturn(Optional.of(food));
+        when(this.repositoryFood.getFoodById(food.getFoodNumber(), Status.ACTIVE)).thenReturn(Optional.ofNullable(food));
 
         assertDoesNotThrow(() -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
 
-        verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber());
-        verify(repositoryFood, times(1)).delete(food);
+        verify(repositoryFood, times(1)).getFoodById(food.getFoodNumber(), Status.ACTIVE);
+        verify(repositoryFood, times(1)).safeDelete(food.getFoodNumber(), Status.INACTIVE);
     }
+
 
     @Test
     @DisplayName("Teste de erro ao deletar comida")
