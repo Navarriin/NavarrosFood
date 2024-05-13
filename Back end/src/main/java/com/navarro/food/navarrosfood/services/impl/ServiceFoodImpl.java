@@ -45,6 +45,7 @@ public class ServiceFoodImpl implements ServiceFood {
     }
 
     @Override
+    @Transactional
     public FoodResponse updateFood(Long id, FoodRequest request) {
         return this.repositoryFood.getFoodById(id, Status.ACTIVE).map(food -> {
                    try {

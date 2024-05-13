@@ -1,7 +1,6 @@
 package com.navarro.food.navarrosfood.services;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
-import com.navarro.food.navarrosfood.exception.ViolationException;
 import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
 import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
 import com.navarro.food.navarrosfood.model.DTOs.mapper.FoodMapper;
@@ -22,7 +21,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

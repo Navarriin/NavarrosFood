@@ -36,7 +36,6 @@ public class ControllerFood {
     }
 
     @PutMapping("/{id}")
-    @Transactional
     public ResponseEntity<FoodResponse> updateFood(@PathVariable Long id, @Valid @RequestBody FoodRequest request) {
         return ResponseEntity.ok().body(this.serviceFood.updateFood(id, request));
     }
