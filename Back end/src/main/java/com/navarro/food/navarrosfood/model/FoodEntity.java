@@ -1,7 +1,7 @@
 package com.navarro.food.navarrosfood.model;
 
-import com.navarro.food.navarrosfood.model.Enums.ConverterStatus;
-import com.navarro.food.navarrosfood.model.Enums.Status;
+import com.navarro.food.navarrosfood.enums.ConverterStatus;
+import com.navarro.food.navarrosfood.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

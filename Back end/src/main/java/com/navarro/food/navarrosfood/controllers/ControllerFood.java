@@ -1,9 +1,8 @@
 package com.navarro.food.navarrosfood.controllers;
 
-import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
-import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.FoodRequest;
+import com.navarro.food.navarrosfood.dtos.FoodResponse;
 import com.navarro.food.navarrosfood.services.ServiceFood;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

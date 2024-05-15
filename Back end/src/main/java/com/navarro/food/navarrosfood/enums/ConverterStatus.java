@@ -1,6 +1,5 @@
-package com.navarro.food.navarrosfood.model.Enums;
+package com.navarro.food.navarrosfood.enums;
 
-import com.navarro.food.navarrosfood.model.Enums.Status;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

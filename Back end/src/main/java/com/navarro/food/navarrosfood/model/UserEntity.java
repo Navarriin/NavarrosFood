@@ -1,6 +1,8 @@
 package com.navarro.food.navarrosfood.model;
 
-import com.navarro.food.navarrosfood.model.Enums.UserRole;
+import com.navarro.food.navarrosfood.enums.ConverterStatus;
+import com.navarro.food.navarrosfood.enums.Status;
+import com.navarro.food.navarrosfood.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +29,9 @@ public class UserEntity implements UserDetails {
     private String login;
     private String password;
     private UserRole role;
+
+    @Convert(converter = ConverterStatus.class)
+    private Status status = Status.ACTIVE;
 
     public UserEntity(String name, String login, String password, UserRole role) {
         this.name = name;

@@ -1,7 +1,7 @@
-package com.navarro.food.navarrosfood.model.DTOs.mapper;
+package com.navarro.food.navarrosfood.dtos.mapper;
 
-import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
-import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.FoodRequest;
+import com.navarro.food.navarrosfood.dtos.FoodResponse;
 import com.navarro.food.navarrosfood.model.FoodEntity;
 import org.springframework.stereotype.Service;
 

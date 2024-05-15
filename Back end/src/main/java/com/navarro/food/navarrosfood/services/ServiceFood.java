@@ -1,7 +1,7 @@
 package com.navarro.food.navarrosfood.services;
 
-import com.navarro.food.navarrosfood.model.DTOs.FoodRequest;
-import com.navarro.food.navarrosfood.model.DTOs.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.FoodRequest;
+import com.navarro.food.navarrosfood.dtos.FoodResponse;
 
 import java.util.List;
 

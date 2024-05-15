@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.model.DTOs;
+package com.navarro.food.navarrosfood.dtos;
 
 import com.navarro.food.navarrosfood.model.FoodEntity;
 import jakarta.validation.constraints.NotBlank;

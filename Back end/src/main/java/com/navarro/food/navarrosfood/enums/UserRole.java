@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.model.Enums;
+package com.navarro.food.navarrosfood.enums;
 
 import lombok.Getter;
 
