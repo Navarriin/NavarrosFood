@@ -33,11 +33,10 @@ public class UserEntity implements UserDetails {
     @Convert(converter = ConverterStatus.class)
     private Status status = Status.ACTIVE;
 
-    public UserEntity(String name, String login, String password, UserRole role) {
+    public UserEntity(String name, String login, String password) {
         this.name = name;
         this.login = login;
         this.password = password;
-        this.role = role;
     }
 
     @Override
