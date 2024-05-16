@@ -81,7 +81,7 @@ public class FoodServiceTest {
 
         var result = assertThrows(FoodNotFound.class, () -> this.serviceFood.getFoodById(food.getFoodNumber()));
 
-        assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
+        assertEquals(String.format("Food with id %s not found!", food.getFoodNumber()), result.getMessage());
     }
 
     @Test
@@ -116,7 +116,7 @@ public class FoodServiceTest {
         var result = assertThrows(FoodNotFound.class,
                 () -> this.serviceFood.updateFood(food.getFoodNumber(), request));
 
-        assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
+        assertEquals(String.format("Food with id %s not found!", food.getFoodNumber()), result.getMessage());
     }
 
     @Test
@@ -138,6 +138,6 @@ public class FoodServiceTest {
         var result = assertThrows(FoodNotFound.class,
                 () -> this.serviceFood.deleteFoodById(food.getFoodNumber()));
 
-        assertEquals("Food with id " + food.getFoodNumber() + " not found!", result.getMessage());
+        assertEquals(String.format("Food with id %s not found!", food.getFoodNumber()), result.getMessage());
     }
 }
