@@ -2,6 +2,8 @@ package com.navarro.food.navarrosfood.services;
 
 import com.navarro.food.navarrosfood.dtos.UserRequestLogin;
 import com.navarro.food.navarrosfood.dtos.UserResponse;
+import com.navarro.food.navarrosfood.exception.IncorrectPassword;
+import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.model.UserEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.impl.UserRegistrationServiceImpl;
@@ -30,12 +32,16 @@ public class UserRegistrationServiceTest {
     private UserRegistrationServiceImpl userRegistrationService;
 
     private UserRequestLogin requestLogin;
+    private UserRequestLogin requestLoginInvalid;
+    private UserRequestLogin requestPasswordInvalid;
     private UserResponse userResponse;
     private UserEntity userEntity;
 
     @BeforeEach
     void setUp(){
         this.requestLogin = new UserRequestLogin("login", "password");
+        this.requestLoginInvalid = new UserRequestLogin("login errado", "password");
+        this.requestPasswordInvalid = new UserRequestLogin("login", "password errada");
         this.userResponse = new UserResponse("Gabriel", "senha criptografada");
         this.userEntity = new UserEntity("Gabriel", "Navarrinn", "password");
     }
@@ -50,5 +56,29 @@ public class UserRegistrationServiceTest {
         assertNotNull(result);
         assertEquals("Gabriel", this.userResponse.name());
         verify(this.repository, times(1)).findByLogin(this.requestLogin.login());
+    }
+
+    @Test
+    @DisplayName("Teste de erro ao inserir senha errada")
+    void loginErrorPass(){
+        when(this.repository.findByLogin(this.requestLogin.login())).thenReturn(Optional.ofNullable(this.userEntity));
+
+        var result = assertThrows(IncorrectPassword.class ,
+                () -> this.userRegistrationService.login(this.requestPasswordInvalid));
+
+        assertEquals("Incorrect password!", result.getMessage());
+        verify(this.repository, times(1)).findByLogin(this.requestLogin.login());
+    }
+
+    @Test
+    @DisplayName("Teste de erro ao digitar login invalido")
+    void loginErrorNotFound(){
+        when(this.repository.findByLogin(this.requestLoginInvalid.login())).thenReturn(Optional.empty());
+
+        var result = assertThrows(UserNotFound.class ,
+                () -> this.userRegistrationService.login(this.requestLoginInvalid));
+
+        assertEquals(String.format("User with login %s not found!", this.requestLoginInvalid.login()), result.getMessage());
+        verify(this.repository, times(1)).findByLogin(this.requestLoginInvalid.login());
     }
 }
