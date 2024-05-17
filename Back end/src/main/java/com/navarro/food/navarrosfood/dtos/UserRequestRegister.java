@@ -9,5 +9,5 @@ public record UserRequestRegister(
         @NotNull @NotBlank String name,
         @NotNull @NotBlank @Size(max = 30) String login,
         @NotNull @NotBlank @Size(max = 20) String password,
-        @NotNull @NotBlank UserRole role) {
+        @NotNull UserRole role) {
 }

@@ -38,7 +38,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     public UserResponse login(UserRequestLogin request) {
         return this.repositoryUser.findByLogin(request.login())
                 .map(user -> {
-                        if(passwordEncoder.matches(request.password(), user.getPassword())) {
+                        if(this.passwordEncoder.matches(request.password(), user.getPassword())) {
                             return new UserResponse(user.getName(), this.generateToken(user));
                         }
                         throw new IncorrectPassword("Incorrect password!");
@@ -57,7 +57,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         UserEntity user = this.mapper.toEntity(request, passwordEncoded);
         user = this.repositoryUser.save(user);
 
-        return new UserResponse(request.name(), generateToken(user));
+        return new UserResponse(request.name(), this.generateToken(user));
     }
 
     private String generateToken(UserEntity user) {
