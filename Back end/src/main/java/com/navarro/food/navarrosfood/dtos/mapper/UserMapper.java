@@ -9,9 +9,10 @@ import java.util.Objects;
 @Service
 public class UserMapper {
 
-    public UserEntity toEntity(UserRequestRegister register) {
+    public UserEntity toEntity(UserRequestRegister register, String password) {
         if (Objects.isNull(register)) return null;
 
-        return new UserEntity(register.name(), register.login(), register.password(), register.role());
+        return new UserEntity(register.name(), register.login(), password, register.role());
     }
+
 }
