@@ -31,7 +31,6 @@ public class ControllerFood {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FoodResponse> createFood(@Valid @RequestBody FoodRequest request) {
         return ResponseEntity.ok().body(this.serviceFood.createFood(request));
     }
