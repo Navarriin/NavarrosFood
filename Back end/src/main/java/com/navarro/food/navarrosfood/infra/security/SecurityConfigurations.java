@@ -31,6 +31,7 @@ public class SecurityConfigurations  {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET, "api/foods").authenticated()
+                        .requestMatchers(HttpMethod.GET, "api/foods/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "api/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "api/foods").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "user/login").permitAll()

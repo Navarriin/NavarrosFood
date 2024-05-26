@@ -5,6 +5,7 @@ import com.navarro.food.navarrosfood.dtos.FoodResponse;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class ControllerFood {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<FoodResponse> createFood(@Valid @RequestBody FoodRequest request) {
         return ResponseEntity.ok().body(this.serviceFood.createFood(request));
     }
