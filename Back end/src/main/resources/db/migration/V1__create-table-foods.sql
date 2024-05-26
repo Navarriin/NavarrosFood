@@ -3,5 +3,6 @@ CREATE TABLE foods (
     name VARCHAR(60) NOT NULL,
     description VARCHAR(300) NOT NULL,
     image TEXT NOT NULL,
-    value_food REAL NOT NULL
+    value_food REAL NOT NULL,
+    status VARCHAR(20)
 );
