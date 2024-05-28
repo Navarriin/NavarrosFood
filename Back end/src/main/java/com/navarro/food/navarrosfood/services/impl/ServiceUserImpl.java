@@ -2,6 +2,7 @@ package com.navarro.food.navarrosfood.services.impl;
 
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
+import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.ServiceUser;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,13 @@ public class ServiceUserImpl implements ServiceUser {
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return this.repositoryUser.findAll().stream().map(userMapper::toResponse).toList();
+        return this.repositoryUser.findAll().stream().map(this.userMapper::toResponse).toList();
+    }
+
+    @Override
+    public UserResponse getUserByLogin(String login) {
+        return this.repositoryUser.findByLogin(login)
+                .map(this.userMapper::toResponse)
+                .orElseThrow(() -> new UserNotFound(String.format("User com login %s não existe!", login)));
     }
 }

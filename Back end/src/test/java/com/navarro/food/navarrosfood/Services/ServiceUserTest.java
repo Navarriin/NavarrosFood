@@ -77,6 +77,6 @@ class ServiceUserTest {
 
         assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
 
-       verify(repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+        verify(repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 }

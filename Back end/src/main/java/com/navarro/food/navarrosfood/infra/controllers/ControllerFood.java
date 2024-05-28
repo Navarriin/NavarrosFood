@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.controllers;
+package com.navarro.food.navarrosfood.infra.controllers;
 
 import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
 import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
