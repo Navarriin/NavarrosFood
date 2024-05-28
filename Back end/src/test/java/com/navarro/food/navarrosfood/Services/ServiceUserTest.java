@@ -2,6 +2,7 @@ package com.navarro.food.navarrosfood.services;
 
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
+import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.model.UserEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.impl.ServiceUserImpl;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
@@ -56,7 +57,7 @@ class ServiceUserTest {
     }
 
     @Test
-    @DisplayName("Teste para sucesso de receber um unico user.")
+    @DisplayName("Teste para sucesso de pegar um unico user.")
     void getUserByLoginSuccess(){
         when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
                 .thenReturn(Optional.ofNullable(this.userEntity));
@@ -67,5 +68,15 @@ class ServiceUserTest {
 
         assertNotNull(result);
         assertEquals(this.userResponse, result);
+    }
+
+    @Test
+    @DisplayName("Teste para erro ao pegar um unico user.")
+    void getUserByLoginError(){
+        when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
+
+       verify(repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 }
