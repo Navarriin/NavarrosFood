@@ -75,8 +75,9 @@ class ServiceUserTest {
     void getUserByLoginError(){
         when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
 
-        assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
+        var result = assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
 
+        assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
         verify(repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 }
