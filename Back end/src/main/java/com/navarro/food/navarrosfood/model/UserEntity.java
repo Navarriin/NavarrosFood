@@ -1,8 +1,6 @@
 package com.navarro.food.navarrosfood.model;
 
 import com.navarro.food.navarrosfood.enums.ConverterRole;
-import com.navarro.food.navarrosfood.enums.ConverterStatus;
-import com.navarro.food.navarrosfood.enums.Status;
 import com.navarro.food.navarrosfood.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,9 +30,6 @@ public class UserEntity implements UserDetails {
 
     @Convert(converter = ConverterRole.class)
     private UserRole role;
-
-    @Convert(converter = ConverterStatus.class)
-    private Status status = Status.ACTIVE;
 
     public UserEntity(String name, String login, String password) {
         this.name = name;

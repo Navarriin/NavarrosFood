@@ -2,7 +2,9 @@ package com.navarro.food.navarrosfood.utils;
 
 import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
 import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
+import com.navarro.food.navarrosfood.enums.UserRole;
 import com.navarro.food.navarrosfood.model.FoodEntity;
+import com.navarro.food.navarrosfood.model.UserEntity;
 
 import java.math.BigDecimal;
 
@@ -18,5 +20,15 @@ public class Utils {
 
     public static FoodRequest initRequest() {
         return new FoodRequest("FoodTest", "Descrição da imagem aqui", "Link da imagem aqui", new BigDecimal(30));
+    }
+
+    public static UserEntity initUserEntity() {
+        return new UserEntity(
+                "888988ef-6f23-4a55-9dc9-dc5d39c629c0",
+                "Gabriel",
+                "Navarro",
+                "$2a$10$b6Xr6lEHfmFY7s7UlFZ0hOxo7ZiVcM3l74CHuGbPue9sqz0.A0fGG",
+                UserRole.ADMIN
+        );
     }
 }
