@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.dtos;
+package com.navarro.food.navarrosfood.dtos.user;
 
 import com.navarro.food.navarrosfood.enums.UserRole;
 import jakarta.validation.constraints.NotBlank;

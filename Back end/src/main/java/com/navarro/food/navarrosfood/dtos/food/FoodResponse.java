@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.dtos;
+package com.navarro.food.navarrosfood.dtos.food;
 
 import com.navarro.food.navarrosfood.model.FoodEntity;
 

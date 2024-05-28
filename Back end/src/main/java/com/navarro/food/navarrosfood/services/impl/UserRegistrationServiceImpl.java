@@ -1,8 +1,8 @@
 package com.navarro.food.navarrosfood.services.impl;
 
-import com.navarro.food.navarrosfood.dtos.UserRequestLogin;
-import com.navarro.food.navarrosfood.dtos.UserRequestRegister;
-import com.navarro.food.navarrosfood.dtos.UserResponse;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestLogin;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestRegister;
+import com.navarro.food.navarrosfood.dtos.user.UserResponseLogReg;
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.exception.IncorrectPassword;
 import com.navarro.food.navarrosfood.exception.UserAlreadyExistsException;
@@ -35,11 +35,11 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     }
 
     @Override
-    public UserResponse login(UserRequestLogin request) {
+    public UserResponseLogReg login(UserRequestLogin request) {
         return this.repositoryUser.findByLogin(request.login())
                 .map(user -> {
                         if(this.passwordEncoder.matches(request.password(), user.getPassword())) {
-                            return new UserResponse(user.getName(), this.generateToken(user));
+                            return new UserResponseLogReg(user.getName(), this.generateToken(user));
                         }
                         throw new IncorrectPassword("Incorrect password!");
                 }).orElseThrow(
@@ -47,7 +47,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
     }
 
     @Override
-    public UserResponse register(UserRequestRegister request) {
+    public UserResponseLogReg register(UserRequestRegister request) {
         this.repositoryUser.findByLogin(request.login())
             .ifPresent(user -> {
                 throw new UserAlreadyExistsException(String.format("User with login %s already exists.", user.getLogin()));
@@ -57,7 +57,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
         UserEntity user = this.mapper.toEntity(request, passwordEncoded);
         user = this.repositoryUser.save(user);
 
-        return new UserResponse(request.name(), this.generateToken(user));
+        return new UserResponseLogReg(request.name(), this.generateToken(user));
     }
 
     private String generateToken(UserEntity user) {

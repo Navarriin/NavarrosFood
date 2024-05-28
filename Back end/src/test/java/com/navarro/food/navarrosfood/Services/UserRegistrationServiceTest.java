@@ -1,7 +1,7 @@
 package com.navarro.food.navarrosfood.services;
 
-import com.navarro.food.navarrosfood.dtos.UserRequestLogin;
-import com.navarro.food.navarrosfood.dtos.UserResponse;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestLogin;
+import com.navarro.food.navarrosfood.dtos.user.UserResponseLogReg;
 import com.navarro.food.navarrosfood.exception.IncorrectPassword;
 import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.model.UserEntity;
@@ -34,7 +34,7 @@ public class UserRegistrationServiceTest {
     private UserRequestLogin requestLogin;
     private UserRequestLogin requestLoginInvalid;
     private UserRequestLogin requestPasswordInvalid;
-    private UserResponse userResponse;
+    private UserResponseLogReg userResponse;
     private UserEntity userEntity;
 
     @BeforeEach
@@ -42,7 +42,7 @@ public class UserRegistrationServiceTest {
         this.requestLogin = new UserRequestLogin("login", "password");
         this.requestLoginInvalid = new UserRequestLogin("login errado", "password");
         this.requestPasswordInvalid = new UserRequestLogin("login", "password errada");
-        this.userResponse = new UserResponse("Gabriel", "senha criptografada");
+        this.userResponse = new UserResponseLogReg("Gabriel", "senha criptografada");
         this.userEntity = new UserEntity("Gabriel", "Navarrinn", "password");
     }
 

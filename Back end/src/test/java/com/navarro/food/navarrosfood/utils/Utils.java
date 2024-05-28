@@ -1,7 +1,7 @@
 package com.navarro.food.navarrosfood.utils;
 
-import com.navarro.food.navarrosfood.dtos.FoodRequest;
-import com.navarro.food.navarrosfood.dtos.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
+import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
 import com.navarro.food.navarrosfood.model.FoodEntity;
 
 import java.math.BigDecimal;

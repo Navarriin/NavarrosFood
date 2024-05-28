@@ -1,8 +1,8 @@
 package com.navarro.food.navarrosfood.services.impl;
 
 import com.navarro.food.navarrosfood.exception.FoodNotFound;
-import com.navarro.food.navarrosfood.dtos.FoodRequest;
-import com.navarro.food.navarrosfood.dtos.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
+import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
 import com.navarro.food.navarrosfood.dtos.mapper.FoodMapper;
 import com.navarro.food.navarrosfood.enums.Status;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;

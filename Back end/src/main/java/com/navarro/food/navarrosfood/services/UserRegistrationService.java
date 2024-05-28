@@ -1,11 +1,10 @@
 package com.navarro.food.navarrosfood.services;
 
-import com.navarro.food.navarrosfood.dtos.UserRequestLogin;
-import com.navarro.food.navarrosfood.dtos.UserRequestRegister;
-import com.navarro.food.navarrosfood.dtos.UserResponse;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestLogin;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestRegister;
+import com.navarro.food.navarrosfood.dtos.user.UserResponseLogReg;
 
 public interface UserRegistrationService {
-
-    UserResponse login(UserRequestLogin request);
-    UserResponse register(UserRequestRegister request);
+    UserResponseLogReg login(UserRequestLogin request);
+    UserResponseLogReg register(UserRequestRegister request);
 }

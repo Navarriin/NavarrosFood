@@ -1,34 +1,26 @@
 package com.navarro.food.navarrosfood.controllers;
 
-import com.navarro.food.navarrosfood.dtos.UserRequestLogin;
-import com.navarro.food.navarrosfood.dtos.UserRequestRegister;
-import com.navarro.food.navarrosfood.dtos.UserResponse;
-import com.navarro.food.navarrosfood.services.impl.UserRegistrationServiceImpl;
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Value;
+import com.navarro.food.navarrosfood.dtos.user.UserResponse;
+import com.navarro.food.navarrosfood.services.ServiceUser;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("user")
+@RequestMapping("api/users")
 public class ControllerUser {
 
-    private final UserRegistrationServiceImpl userRegistrationService;
+    private final ServiceUser serviceUser;
 
-    public ControllerUser(UserRegistrationServiceImpl userRegistrationService) {
-        this.userRegistrationService = userRegistrationService;
+    public ControllerUser(ServiceUser serviceUser) {
+        this.serviceUser = serviceUser;
     }
 
-    @PostMapping("login")
-    public ResponseEntity<UserResponse> userLogin(@RequestBody @Valid UserRequestLogin login) {
-        return ResponseEntity.ok().body(this.userRegistrationService.login(login));
-    }
-
-    @PostMapping("register")
-    public ResponseEntity<UserResponse> userRegister(@RequestBody @Valid UserRequestRegister register) {
-        return ResponseEntity.ok().body(this.userRegistrationService.register(register));
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        return ResponseEntity.ok().body(this.serviceUser.getAllUsers());
     }
 }

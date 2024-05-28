@@ -1,6 +1,7 @@
 package com.navarro.food.navarrosfood.dtos.mapper;
 
-import com.navarro.food.navarrosfood.dtos.UserRequestRegister;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestRegister;
+import com.navarro.food.navarrosfood.dtos.user.UserResponse;
 import com.navarro.food.navarrosfood.model.UserEntity;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +16,9 @@ public class UserMapper {
         return new UserEntity(register.name(), register.login(), password, register.role());
     }
 
+    public UserResponse toResponse(UserEntity entity) {
+        if (Objects.isNull(entity)) return null;
+
+        return new UserResponse(entity);
+    }
 }

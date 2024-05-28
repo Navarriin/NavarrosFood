@@ -1,11 +1,10 @@
 package com.navarro.food.navarrosfood.controllers;
 
-import com.navarro.food.navarrosfood.dtos.FoodRequest;
-import com.navarro.food.navarrosfood.dtos.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
+import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

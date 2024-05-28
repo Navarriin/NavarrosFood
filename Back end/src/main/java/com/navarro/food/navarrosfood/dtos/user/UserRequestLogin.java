@@ -1,4 +1,4 @@
-package com.navarro.food.navarrosfood.dtos;
+package com.navarro.food.navarrosfood.dtos.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
