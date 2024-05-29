@@ -29,6 +29,16 @@ public class ServiceUserImpl implements ServiceUser {
     public UserResponse getUserByLogin(String login) {
         return this.repositoryUser.findByLogin(login)
                 .map(this.userMapper::toResponse)
-                .orElseThrow(() -> new UserNotFound(String.format("User com login %s não existe!", login)));
+                .orElseThrow((() -> this.userNotFound(login)));
+    }
+
+    @Override
+    public void deleteUserByLogin(String login) {
+        this.repositoryUser.findByLogin(login)
+                .ifPresentOrElse(this.repositoryUser::delete, () -> { throw this.userNotFound(login); });
+    }
+
+    private UserNotFound userNotFound(String login) {
+        return new UserNotFound(String.format("User com login %s não existe!", login));
     }
 }

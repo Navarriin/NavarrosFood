@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface ServiceUser {
     List<UserResponse> getAllUsers();
     UserResponse getUserByLogin(String login);
+
+    void deleteUserByLogin(String login);
 }
