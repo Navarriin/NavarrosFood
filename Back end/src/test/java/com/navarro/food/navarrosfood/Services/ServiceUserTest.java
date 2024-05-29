@@ -78,6 +78,30 @@ class ServiceUserTest {
         var result = assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
 
         assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
-        verify(repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+    }
+
+    @Test
+    @DisplayName("Teste para sucesso ao deletar um user.")
+    void deleteUserByLoginSuccess() {
+        when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
+                .thenReturn(Optional.ofNullable(this.userEntity));
+
+        assertDoesNotThrow(() -> this.serviceUser.deleteUserByLogin(this.userEntity.getLogin()));
+
+        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+        verify(this.repositoryUser, times(1)).delete(this.userEntity);
+    }
+
+    @Test
+    @DisplayName("Teste para erro ao deletar um user.")
+    void deleteUserByLoginError() {
+        when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
+
+        var result = assertThrows(UserNotFound.class,
+                () -> this.serviceUser.deleteUserByLogin(this.userEntity.getLogin()));
+
+        assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
+        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 }
