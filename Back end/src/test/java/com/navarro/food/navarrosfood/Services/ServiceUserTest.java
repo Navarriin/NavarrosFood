@@ -8,7 +8,7 @@ import com.navarro.food.navarrosfood.model.UserEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.impl.ServiceUserImpl;
 import com.navarro.food.navarrosfood.utils.Utils;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,102 +40,102 @@ class ServiceUserTest {
     @InjectMocks
     private ServiceUserImpl serviceUser;
 
-    private UserEntity userEntity;
-    private UserResponse userResponse;
-    private UserRequestUpdate userRequestUpdate;
+    private static UserEntity userEntity;
+    private static UserResponse userResponse;
+    private static UserRequestUpdate userRequestUpdate;
 
-    @BeforeEach
-    void setUp() {
-        this.userEntity = Utils.initUserEntity();
-        this.userResponse = new UserResponse(this.userEntity);
-        this.userRequestUpdate = Utils.initUserRequestUpdate();
+    @BeforeAll
+    static void setUp() {
+        userEntity = Utils.initUserEntity();
+        userResponse = new UserResponse(userEntity);
+        userRequestUpdate = Utils.initUserRequestUpdate();
     }
 
     @Test
     @DisplayName("Teste para sucesso de pegar todos usuários.")
     void getAllUsers() {
-        when(this.repositoryUser.findAll()).thenReturn(List.of(this.userEntity));
-        when(this.userMapper.toResponse(this.userEntity)).thenReturn(this.userResponse);
+        when(this.repositoryUser.findAll()).thenReturn(List.of(userEntity));
+        when(this.userMapper.toResponse(userEntity)).thenReturn(userResponse);
 
         var result = assertDoesNotThrow(() -> this.serviceUser.getAllUsers());
 
         assertNotNull(result);
-        assertEquals(List.of(this.userResponse), result);
+        assertEquals(List.of(userResponse), result);
     }
 
     @Test
     @DisplayName("Teste para sucesso de pegar um unico usuário.")
     void getUserByLoginSuccess(){
-        when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
-                .thenReturn(Optional.ofNullable(this.userEntity));
-        when(this.userMapper.toResponse(this.userEntity)).thenReturn(this.userResponse);
+        when(this.repositoryUser.findByLogin(userEntity.getLogin()))
+                .thenReturn(Optional.ofNullable(userEntity));
+        when(this.userMapper.toResponse(userEntity)).thenReturn(userResponse);
 
-        var result = assertDoesNotThrow(() -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
+        var result = assertDoesNotThrow(() -> this.serviceUser.getUserByLogin(userEntity.getLogin()));
 
 
         assertNotNull(result);
-        assertEquals(this.userResponse, result);
+        assertEquals(userResponse, result);
     }
 
     @Test
     @DisplayName("Teste para erro ao pegar um unico usuário.")
     void getUserByLoginError(){
-        when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
+        when(this.repositoryUser.findByLogin(userEntity.getLogin())).thenReturn(Optional.empty());
 
-        var result = assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
+        var result = assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(userEntity.getLogin()));
 
-        assertEquals(String.format("User with login %s does not exist!", this.userEntity.getLogin()), result.getMessage());
-        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+        assertEquals(String.format("User with login %s does not exist!", userEntity.getLogin()), result.getMessage());
+        verify(this.repositoryUser, times(1)).findByLogin(userEntity.getLogin());
     }
 
     @Test
     @DisplayName("Teste para sucesso ao atualizar algum usuário")
     void updateUserByLoginSuccess() {
-        when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
-                .thenReturn(Optional.ofNullable(this.userEntity));
-        when(this.userMapper.toResponse(this.userEntity)).thenReturn(this.userResponse);
-        when(this.passwordEncoder.encode(this.userRequestUpdate.password())).thenReturn(anyString());
+        when(this.repositoryUser.findByLogin(userEntity.getLogin()))
+                .thenReturn(Optional.ofNullable(userEntity));
+        when(this.userMapper.toResponse(userEntity)).thenReturn(userResponse);
+        when(this.passwordEncoder.encode(userRequestUpdate.password())).thenReturn(anyString());
 
         var result = assertDoesNotThrow(
-                () -> this.serviceUser.updateUserByLogin(this.userEntity.getLogin(), this.userRequestUpdate));
+                () -> this.serviceUser.updateUserByLogin(userEntity.getLogin(), userRequestUpdate));
 
         assertNotNull(result);
-        assertEquals(this.userResponse, result);
+        assertEquals(userResponse, result);
     }
 
     @Test
     @DisplayName("Teste para erro ao atualizar algum usuário(not found)")
     void updateUserByLoginErrorNotFound() {
-        when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
+        when(this.repositoryUser.findByLogin(userEntity.getLogin())).thenReturn(Optional.empty());
 
         var result = assertThrows(UserNotFound.class,
-                () -> this.serviceUser.updateUserByLogin(this.userEntity.getLogin(), this.userRequestUpdate));
+                () -> this.serviceUser.updateUserByLogin(userEntity.getLogin(), userRequestUpdate));
 
-        assertEquals(String.format("User with login %s does not exist!", this.userEntity.getLogin()), result.getMessage());
-        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+        assertEquals(String.format("User with login %s does not exist!", userEntity.getLogin()), result.getMessage());
+        verify(this.repositoryUser, times(1)).findByLogin(userEntity.getLogin());
     }
 
     @Test
     @DisplayName("Teste para sucesso ao deletar um usuário.")
     void deleteUserByLoginSuccess() {
-        when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
-                .thenReturn(Optional.ofNullable(this.userEntity));
+        when(this.repositoryUser.findByLogin(userEntity.getLogin()))
+                .thenReturn(Optional.ofNullable(userEntity));
 
-        assertDoesNotThrow(() -> this.serviceUser.deleteUserByLogin(this.userEntity.getLogin()));
+        assertDoesNotThrow(() -> this.serviceUser.deleteUserByLogin(userEntity.getLogin()));
 
-        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
-        verify(this.repositoryUser, times(1)).delete(this.userEntity);
+        verify(this.repositoryUser, times(1)).findByLogin(userEntity.getLogin());
+        verify(this.repositoryUser, times(1)).delete(userEntity);
     }
 
     @Test
     @DisplayName("Teste para erro ao deletar um user.")
     void deleteUserByLoginError() {
-        when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
+        when(this.repositoryUser.findByLogin(userEntity.getLogin())).thenReturn(Optional.empty());
 
         var result = assertThrows(UserNotFound.class,
-                () -> this.serviceUser.deleteUserByLogin(this.userEntity.getLogin()));
+                () -> this.serviceUser.deleteUserByLogin(userEntity.getLogin()));
 
-        assertEquals(String.format("User with login %s does not exist!", this.userEntity.getLogin()), result.getMessage());
-        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+        assertEquals(String.format("User with login %s does not exist!", userEntity.getLogin()), result.getMessage());
+        verify(this.repositoryUser, times(1)).findByLogin(userEntity.getLogin());
     }
 }
