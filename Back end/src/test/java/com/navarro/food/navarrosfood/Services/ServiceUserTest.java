@@ -84,7 +84,7 @@ class ServiceUserTest {
 
         var result = assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByLogin(this.userEntity.getLogin()));
 
-        assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
+        assertEquals(String.format("User with login %s does not exist!", this.userEntity.getLogin()), result.getMessage());
         verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 
@@ -111,7 +111,7 @@ class ServiceUserTest {
         var result = assertThrows(UserNotFound.class,
                 () -> this.serviceUser.updateUserByLogin(this.userEntity.getLogin(), this.userRequestUpdate));
 
-        assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
+        assertEquals(String.format("User with login %s does not exist!", this.userEntity.getLogin()), result.getMessage());
         verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 
@@ -135,7 +135,7 @@ class ServiceUserTest {
         var result = assertThrows(UserNotFound.class,
                 () -> this.serviceUser.deleteUserByLogin(this.userEntity.getLogin()));
 
-        assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
+        assertEquals(String.format("User with login %s does not exist!", this.userEntity.getLogin()), result.getMessage());
         verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
     }
 }

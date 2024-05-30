@@ -60,6 +60,6 @@ public class ServiceUserImpl implements ServiceUser {
     }
 
     private UserNotFound userNotFound(String login) {
-        return new UserNotFound(String.format("User com login %s não existe!", login));
+        return new UserNotFound(String.format("User with login %s does not exist!", login));
     }
 }
