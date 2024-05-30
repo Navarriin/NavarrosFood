@@ -1,6 +1,7 @@
 package com.navarro.food.navarrosfood.services;
 
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestUpdate;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
 import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.model.UserEntity;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -32,16 +34,21 @@ class ServiceUserTest {
     @Mock
     private UserMapper userMapper;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private ServiceUserImpl serviceUser;
 
     private UserEntity userEntity;
     private UserResponse userResponse;
+    private UserRequestUpdate userRequestUpdate;
 
     @BeforeEach
     void setUp() {
         this.userEntity = Utils.initUserEntity();
         this.userResponse = new UserResponse(this.userEntity);
+        this.userRequestUpdate = Utils.initUserRequestUpdate();
     }
 
     @Test
@@ -57,7 +64,7 @@ class ServiceUserTest {
     }
 
     @Test
-    @DisplayName("Teste para sucesso de pegar um unico user.")
+    @DisplayName("Teste para sucesso de pegar um unico usuário.")
     void getUserByLoginSuccess(){
         when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
                 .thenReturn(Optional.ofNullable(this.userEntity));
@@ -71,7 +78,7 @@ class ServiceUserTest {
     }
 
     @Test
-    @DisplayName("Teste para erro ao pegar um unico user.")
+    @DisplayName("Teste para erro ao pegar um unico usuário.")
     void getUserByLoginError(){
         when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
 
@@ -82,7 +89,34 @@ class ServiceUserTest {
     }
 
     @Test
-    @DisplayName("Teste para sucesso ao deletar um user.")
+    @DisplayName("Teste para sucesso ao atualizar algum usuário")
+    void updateUserByLoginSuccess() {
+        when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
+                .thenReturn(Optional.ofNullable(this.userEntity));
+        when(this.userMapper.toResponse(this.userEntity)).thenReturn(this.userResponse);
+        when(this.passwordEncoder.encode(this.userRequestUpdate.password())).thenReturn(anyString());
+
+        var result = assertDoesNotThrow(
+                () -> this.serviceUser.updateUserByLogin(this.userEntity.getLogin(), this.userRequestUpdate));
+
+        assertNotNull(result);
+        assertEquals(this.userResponse, result);
+    }
+
+    @Test
+    @DisplayName("Teste para erro ao atualizar algum usuário(not found)")
+    void updateUserByLoginErrorNotFound() {
+        when(this.repositoryUser.findByLogin(this.userEntity.getLogin())).thenReturn(Optional.empty());
+
+        var result = assertThrows(UserNotFound.class,
+                () -> this.serviceUser.updateUserByLogin(this.userEntity.getLogin(), this.userRequestUpdate));
+
+        assertEquals(String.format("User com login %s não existe!", this.userEntity.getLogin()), result.getMessage());
+        verify(this.repositoryUser, times(1)).findByLogin(this.userEntity.getLogin());
+    }
+
+    @Test
+    @DisplayName("Teste para sucesso ao deletar um usuário.")
     void deleteUserByLoginSuccess() {
         when(this.repositoryUser.findByLogin(this.userEntity.getLogin()))
                 .thenReturn(Optional.ofNullable(this.userEntity));

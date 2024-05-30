@@ -2,6 +2,8 @@ package com.navarro.food.navarrosfood.utils;
 
 import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
 import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestRegister;
+import com.navarro.food.navarrosfood.dtos.user.UserRequestUpdate;
 import com.navarro.food.navarrosfood.enums.UserRole;
 import com.navarro.food.navarrosfood.model.FoodEntity;
 import com.navarro.food.navarrosfood.model.UserEntity;
@@ -30,5 +32,9 @@ public class Utils {
                 "$2a$10$b6Xr6lEHfmFY7s7UlFZ0hOxo7ZiVcM3l74CHuGbPue9sqz0.A0fGG",
                 UserRole.ADMIN
         );
+    }
+
+    public static UserRequestUpdate initUserRequestUpdate() {
+        return new UserRequestUpdate("Gabriel", "Navarro", "1234");
     }
 }

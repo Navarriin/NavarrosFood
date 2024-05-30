@@ -1,12 +1,11 @@
-package com.navarro.food.navarrosfood.infra.controllers;
+package com.navarro.food.navarrosfood.controllers;
 
+import com.navarro.food.navarrosfood.dtos.user.UserRequestUpdate;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
 import com.navarro.food.navarrosfood.services.ServiceUser;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +27,18 @@ public class ControllerUser {
     @GetMapping("/{login}")
     public ResponseEntity<UserResponse> getUserByLogin(@PathVariable String login) {
         return ResponseEntity.ok().body(this.serviceUser.getUserByLogin(login));
+    }
+
+    @PutMapping("/{login}")
+    public ResponseEntity<UserResponse> updateUserByLogin(
+            @PathVariable String login, @Valid @RequestBody UserRequestUpdate body
+    ) {
+        return ResponseEntity.ok().body(this.serviceUser.updateUserByLogin(login, body));
+    }
+
+    @DeleteMapping("/{login}")
+    public ResponseEntity<String> deleteUserByLogin(@PathVariable String login) {
+        this.serviceUser.deleteUserByLogin(login);
+        return ResponseEntity.ok().body(String.format("Usuário com o login %s foi deletado com sucesso!", login));
     }
 }

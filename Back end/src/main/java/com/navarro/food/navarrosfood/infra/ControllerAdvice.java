@@ -5,7 +5,9 @@ import com.navarro.food.navarrosfood.exception.IncorrectPassword;
 import com.navarro.food.navarrosfood.exception.UserAlreadyExistsException;
 import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.exception.message.DefaultMessage;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
+    private final HttpStatus CONFLICT = HttpStatus.CONFLICT;
     private final HttpStatus FORBIDDEN = HttpStatus.FORBIDDEN;
     private final HttpStatus NOT_FOUND = HttpStatus.NOT_FOUND;
     private final HttpStatus BAD_REQUEST = HttpStatus.BAD_REQUEST;
@@ -43,4 +46,15 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<DefaultMessage> userAlreadyExistsExceptionHandler(UserAlreadyExistsException exception) {
         return ResponseEntity.status(BAD_REQUEST).body(new DefaultMessage(BAD_REQUEST, exception.getMessage()));
     }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<DefaultMessage> dataIntegrityViolationExceptionHandler(DataIntegrityViolationException exception) {
+        return ResponseEntity.status(CONFLICT).body(new DefaultMessage(CONFLICT, "Data integrity violation occurred."));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<DefaultMessage> constraintViolationExceptionHandler(ConstraintViolationException exception) {
+        return ResponseEntity.status(CONFLICT).body(new DefaultMessage(CONFLICT, "Data integrity violation occurred."));
+    }
+
 }
