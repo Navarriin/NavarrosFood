@@ -30,6 +30,7 @@ public class SecurityConfigurations  {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "api/foods").authenticated()
                         .requestMatchers(HttpMethod.GET, "api/foods/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "api/users").hasRole("ADMIN")

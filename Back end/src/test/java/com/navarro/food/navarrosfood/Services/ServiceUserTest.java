@@ -72,7 +72,6 @@ class ServiceUserTest {
 
         var result = assertDoesNotThrow(() -> this.serviceUser.getUserByLogin(userEntity.getLogin()));
 
-
         assertNotNull(result);
         assertEquals(userResponse, result);
     }
