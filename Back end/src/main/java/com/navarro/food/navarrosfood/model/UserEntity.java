@@ -1,5 +1,6 @@
 package com.navarro.food.navarrosfood.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.navarro.food.navarrosfood.enums.ConverterRole;
 import com.navarro.food.navarrosfood.enums.UserRole;
 import jakarta.persistence.*;
@@ -8,9 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Getter
@@ -23,13 +22,21 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
     private String name;
     private String login;
     private String password;
 
     @Convert(converter = ConverterRole.class)
     private UserRole role;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_food",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "food_id"))
+    @JsonManagedReference
+    private List<FoodEntity> foods = new ArrayList<>();
 
     public UserEntity(String name, String login, String password) {
         this.name = name;

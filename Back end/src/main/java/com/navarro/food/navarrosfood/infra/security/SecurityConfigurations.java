@@ -35,6 +35,7 @@ public class SecurityConfigurations  {
                         .requestMatchers(HttpMethod.GET, "api/foods/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "api/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "api/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "api/users/insert/{login}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "api/foods").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "user/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "user/register").hasRole("ADMIN")

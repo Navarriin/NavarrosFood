@@ -26,7 +26,6 @@ public class Utils {
 
     public static UserEntity initUserEntity() {
         return new UserEntity(
-                "888988ef-6f23-4a55-9dc9-dc5d39c629c0",
                 "Gabriel",
                 "Navarro",
                 "$2a$10$b6Xr6lEHfmFY7s7UlFZ0hOxo7ZiVcM3l74CHuGbPue9sqz0.A0fGG",
