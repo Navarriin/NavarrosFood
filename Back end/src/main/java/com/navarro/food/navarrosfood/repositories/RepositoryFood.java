@@ -14,14 +14,7 @@ import java.util.Optional;
 @Repository
 public interface RepositoryFood extends JpaRepository<FoodEntity, Long> {
 
-    @Query("SELECT f FROM FoodEntity f WHERE f.status = :status")
-    List<FoodEntity> getAllActiveFoods(@Param("status") Status status);
-
-    @Query("SELECT f FROM FoodEntity f WHERE f.foodNumber = :id AND f.status = :status")
-    Optional<FoodEntity> getFoodById(@Param("id") Long id, @Param("status") Status status);
-
-    @Modifying
-    @Query("UPDATE FoodEntity f SET f.status = :newStatus WHERE f.foodNumber = :id")
-    void safeDelete(@Param("id") Long id, @Param("newStatus") Status newStatus);
+    @Query("SELECT f FROM FoodEntity f WHERE f.id IN :id")
+    List<FoodEntity> findAllFoodsById(@Param("id") List<Long> id);
 
 }

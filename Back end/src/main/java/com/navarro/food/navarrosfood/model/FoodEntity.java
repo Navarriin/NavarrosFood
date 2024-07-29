@@ -2,7 +2,9 @@ package com.navarro.food.navarrosfood.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.navarro.food.navarrosfood.enums.ConverterStatus;
+import com.navarro.food.navarrosfood.enums.ConverterType;
 import com.navarro.food.navarrosfood.enums.Status;
+import com.navarro.food.navarrosfood.enums.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,26 +25,25 @@ public class FoodEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "food_id")
     private Long foodNumber;
     private String name;
-    private String description;
     private String image;
+
+    @Convert(converter = ConverterType.class)
+    private Type type;
 
     @Column(name = "value_food")
     private BigDecimal value;
-
-    @Convert(converter = ConverterStatus.class)
-    private Status status = Status.ACTIVE;
 
     @ManyToMany(mappedBy = "foods", fetch = FetchType.LAZY)
     @JsonBackReference
     private List<UserEntity> users = new ArrayList<>();
 
-    public FoodEntity(String name, String description, String image, BigDecimal value) {
+    public FoodEntity(String name, String image, BigDecimal value, Type type) {
         this.name = name;
-        this.description = description;
         this.image = image;
         this.value = value;
+        this.type = type;
     }
 }

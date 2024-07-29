@@ -3,8 +3,8 @@ package com.navarro.food.navarrosfood.controllers;
 import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
 import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
 import com.navarro.food.navarrosfood.services.ServiceFood;
-import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,35 +20,34 @@ public class ControllerFood {
         this.serviceFood = serviceFood;
     }
 
-    @Operation(description = "Método que lista todas as comidas.")
     @GetMapping
     public ResponseEntity<List<FoodResponse>> getAllFoods() {
-        return ResponseEntity.ok().body(this.serviceFood.listAllFoods());
+        List<FoodResponse> foods = this.serviceFood.listAllFoods();
+        return ResponseEntity.ok().body(foods);
     }
 
-    @Operation(description = "Método que retorna uma única comida pelo id.")
     @GetMapping("/{id}")
     public ResponseEntity<FoodResponse> getFoodById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(this.serviceFood.getFoodById(id));
+        FoodResponse food = this.serviceFood.getFoodById(id);
+        return ResponseEntity.ok().body(food);
     }
 
-    @Operation(description = "Método que cria uma comida e salva no db.")
-    @PostMapping
-    public ResponseEntity<FoodResponse> createFood(@Valid @RequestBody FoodRequest request) {
-        return ResponseEntity.ok().body(this.serviceFood.createFood(request));
+   @PostMapping
+    public ResponseEntity<FoodResponse> createFood(@RequestBody @Valid FoodRequest request) {
+        FoodResponse newFood = this.serviceFood.createFood(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newFood);
     }
 
-    @Operation(description = "Método que atualiza uma comida existente.")
     @PutMapping("/{id}")
-    public ResponseEntity<FoodResponse> updateFood(@PathVariable Long id, @Valid @RequestBody FoodRequest request) {
-        return ResponseEntity.ok().body(this.serviceFood.updateFood(id, request));
+    public ResponseEntity<FoodResponse> updateFood(@PathVariable Long id,
+                                                    @Valid @RequestBody FoodRequest request) {
+        FoodResponse food = this.serviceFood.updateFood(id, request);
+        return ResponseEntity.ok().body(food);
     }
 
-    @Operation(description = "Método que deleta uma comida do db pelo id.")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFood(@PathVariable Long id) {
+    public ResponseEntity<String> deleteFoodById(@PathVariable Long id) {
         this.serviceFood.deleteFoodById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(String.format("Food with id %d successfully deleted!", id));
     }
 }
-

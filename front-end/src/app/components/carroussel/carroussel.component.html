@@ -1,0 +1,16 @@
+<p-carousel
+  [value]="cards"
+  [numVisible]="5"
+  [numScroll]="3"
+  [circular]="true"
+  [responsiveOptions]="responsiveOptions"
+  autoplayInterval="5000"
+>
+  <ng-template let-card pTemplate="item">
+      <app-card
+        [title]="card.title"
+        [value]="card.value"
+        [linkImg]="card.linkImg"
+      />
+  </ng-template>
+</p-carousel>

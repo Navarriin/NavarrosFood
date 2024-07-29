@@ -13,7 +13,7 @@ public class FoodMapper {
     public FoodEntity toEntity(FoodRequest request) {
         if(Objects.isNull(request)) return null;
 
-        return new FoodEntity(request.name(), request.description(), request.image(), request.value());
+        return new FoodEntity(request.name(), request.image(), request.value(), request.type());
     }
 
     public FoodResponse toResponse(FoodEntity entity) {
