@@ -27,23 +27,23 @@ public class ControllerUser {
     }
 
     @Operation(description = "Método que retorna um unico usuário.")
-    @GetMapping("/{login}")
-    public ResponseEntity<UserResponse> getUserByLogin(@PathVariable String login) {
-        return ResponseEntity.ok().body(this.serviceUser.getUserByLogin(login));
+    @GetMapping("/{username}")
+    public ResponseEntity<UserResponse> getUserByLogin(@PathVariable String username) {
+        return ResponseEntity.ok().body(this.serviceUser.getUserByUsername(username));
     }
 
-    @Operation(description = "Método que atualiza o usuário pelo login.")
-    @PutMapping("/{login}")
+    @Operation(description = "Método que atualiza o usuário pelo username.")
+    @PutMapping("/{username}")
     public ResponseEntity<UserResponse> updateUserByLogin(
-            @PathVariable String login, @Valid @RequestBody UserRequestUpdate body
+            @PathVariable String username, @Valid @RequestBody UserRequestUpdate body
     ) {
-        return ResponseEntity.ok().body(this.serviceUser.updateUserByLogin(login, body));
+        return ResponseEntity.ok().body(this.serviceUser.updateUserByUsername(username, body));
     }
 
-    @Operation(description = "Método que deleta o usuário pelo login.")
-    @DeleteMapping("/{login}")
-    public ResponseEntity<String> deleteUserByLogin(@PathVariable String login) {
-        this.serviceUser.deleteUserByLogin(login);
-        return ResponseEntity.ok().body(String.format("User with login %s has been successfully deleted!", login));
+    @Operation(description = "Método que deleta o usuário pelo username.")
+    @DeleteMapping("/{username}")
+    public ResponseEntity<String> deleteUserByLogin(@PathVariable String username) {
+        this.serviceUser.deleteUserByUsername(username);
+        return ResponseEntity.ok().body(String.format("User with username %s has been successfully deleted!", username));
     }
 }

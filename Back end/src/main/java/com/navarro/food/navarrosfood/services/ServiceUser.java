@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ServiceUser {
     List<UserResponse> getAllUsers();
-    UserResponse getUserByLogin(String login);
-    UserResponse updateUserByLogin(String login, UserRequestUpdate body);
-    void deleteUserByLogin(String login);
+    UserResponse getUserByUsername(String username);
+    UserResponse updateUserByUsername(String username, UserRequestUpdate body);
+    void deleteUserByUsername(String login);
 }

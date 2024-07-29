@@ -2,6 +2,8 @@ package com.navarro.food.navarrosfood.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.navarro.food.navarrosfood.enums.ConverterRole;
+import com.navarro.food.navarrosfood.enums.ConverterStatus;
+import com.navarro.food.navarrosfood.enums.Status;
 import com.navarro.food.navarrosfood.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,11 +26,13 @@ public class UserEntity implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    private String login;
+    private String username;
     private String password;
 
     @Convert(converter = ConverterRole.class)
     private UserRole role;
+    @Convert(converter = ConverterStatus.class)
+    private Status status = Status.ACTIVE;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -38,15 +42,15 @@ public class UserEntity implements UserDetails {
     @JsonManagedReference
     private List<FoodEntity> foods = new ArrayList<>();
 
-    public UserEntity(String name, String login, String password) {
+    public UserEntity(String name, String username, String password) {
         this.name = name;
-        this.login = login;
+        this.username = username;
         this.password = password;
     }
 
-    public UserEntity(String name, String login, String password, UserRole role) {
+    public UserEntity(String name, String username, String password, UserRole role) {
         this.name = name;
-        this.login = login;
+        this.username = username;
         this.password = password;
         this.role = role;
     }
@@ -67,7 +71,7 @@ public class UserEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.login;
+        return this.username;
     }
 
     @Override

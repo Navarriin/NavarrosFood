@@ -13,7 +13,7 @@ public class UserMapper {
     public UserEntity toEntity(UserRequestRegister register, String password) {
         if (Objects.isNull(register)) return null;
 
-        return new UserEntity(register.name(), register.login(), password, register.role());
+        return new UserEntity(register.name(), register.username(), password, register.role());
     }
 
     public UserResponse toResponse(UserEntity entity) {

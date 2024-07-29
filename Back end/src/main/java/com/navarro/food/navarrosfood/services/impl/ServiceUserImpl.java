@@ -3,6 +3,7 @@ package com.navarro.food.navarrosfood.services.impl;
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.dtos.user.UserRequestUpdate;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
+import com.navarro.food.navarrosfood.enums.Status;
 import com.navarro.food.navarrosfood.exception.UserNotFound;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.ServiceUser;
@@ -27,39 +28,44 @@ public class ServiceUserImpl implements ServiceUser {
 
     @Override
     public List<UserResponse> getAllUsers() {
-        return this.repositoryUser.findAll().stream().map(this.userMapper::toResponse).toList();
+        return this.repositoryUser.findAll()
+                .stream()
+                .filter(data -> data.getStatus().equals(Status.ACTIVE))
+                .map(this.userMapper::toResponse).toList();
     }
 
-    @Override
-    public UserResponse getUserByLogin(String login) {
-        return this.repositoryUser.findByLogin(login)
+    public UserResponse getUserByUsername(String username) {
+        return this.repositoryUser.findByUsername(username)
                 .map(this.userMapper::toResponse)
-                .orElseThrow((() -> this.userNotFound(login)));
+                .orElseThrow((() -> this.userNotFound(username)));
     }
 
     @Override
     @Transactional
-    public UserResponse updateUserByLogin(String login, UserRequestUpdate body) {
-        return this.repositoryUser.findByLogin(login)
+    public UserResponse updateUserByUsername(String username, UserRequestUpdate body) {
+        return this.repositoryUser.findByUsername(username)
                 .map(user -> {
                         user.setName(body.name());
-                        user.setLogin(body.login());
+                        user.setUsername(body.username());
                         user.setPassword(this.encodePassword(body.password()));
                         return this.userMapper.toResponse(user);
-                }).orElseThrow(() -> this.userNotFound(login));
+                }).orElseThrow(() -> this.userNotFound(username));
     }
 
     @Override
-    public void deleteUserByLogin(String login) {
-        this.repositoryUser.findByLogin(login)
-                .ifPresentOrElse(this.repositoryUser::delete, () -> { throw this.userNotFound(login); });
+    @Transactional
+    public void deleteUserByUsername(String username) {
+        this.repositoryUser.findByUsername(username)
+                .ifPresentOrElse(
+                        data -> data.setStatus(Status.INACTIVE),
+                        () -> { throw this.userNotFound(username); });
     }
 
     private String encodePassword(String password) {
         return this.passwordEncoder.encode(password);
     }
 
-    private UserNotFound userNotFound(String login) {
-        return new UserNotFound(String.format("User with login %s does not exist!", login));
+    private UserNotFound userNotFound(String username) {
+        return new UserNotFound(String.format("User with username %s does not exist!", username));
     }
 }

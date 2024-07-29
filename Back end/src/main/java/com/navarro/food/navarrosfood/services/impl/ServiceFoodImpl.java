@@ -1,76 +1,70 @@
 package com.navarro.food.navarrosfood.services.impl;
 
-import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
 import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
 import com.navarro.food.navarrosfood.dtos.mapper.FoodMapper;
-import com.navarro.food.navarrosfood.enums.Status;
+import com.navarro.food.navarrosfood.exception.FoodNotFound;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import jakarta.transaction.Transactional;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ServiceFoodImpl implements ServiceFood {
 
+    private final RepositoryFood repository;
     private final FoodMapper mapper;
-    private final RepositoryFood repositoryFood;
 
-    public ServiceFoodImpl(FoodMapper mapper, RepositoryFood repositoryFood) {
+    public ServiceFoodImpl(RepositoryFood repository,
+                           FoodMapper mapper) {
+        this.repository = repository;
         this.mapper = mapper;
-        this.repositoryFood = repositoryFood;
     }
 
     @Override
     public List<FoodResponse> listAllFoods() {
-        return this.repositoryFood.getAllActiveFoods(Status.ACTIVE)
-                .stream().map(this.mapper::toResponse).collect(Collectors.toList());
+        return this.repository.findAll()
+                .stream().map(this.mapper::toResponse).toList();
     }
 
     @Override
     public FoodResponse getFoodById(Long id) {
-        return this.mapper.toResponse(
-                this.repositoryFood.getFoodById(id, Status.ACTIVE)
-                       .orElseThrow(() -> this.initFoodNotFoundById(id)));
+        return this.repository.findById(id)
+                .map(this.mapper::toResponse)
+                .orElseThrow(
+                        () -> this.FoodNotFound(id));
     }
 
     @Override
     public FoodResponse createFood(FoodRequest request) {
-        return this.mapper.toResponse(this.repositoryFood.save(this.mapper.toEntity(request)));
+        return this.mapper.toResponse(this.repository.save(this.mapper.toEntity(request)));
     }
 
     @Override
     @Transactional
     public FoodResponse updateFood(Long id, FoodRequest request) {
-        return this.repositoryFood.getFoodById(id, Status.ACTIVE).map(food -> {
-                   try {
-                       food.setName(request.name());
-                       food.setDescription(request.description());
-                       food.setImage(request.image());
-                       food.setValue(request.value());
-                       return this.mapper.toResponse(food);
-                   } catch (ConstraintViolationException exception) {
-                       throw new ValidationException(exception);
-                   }
-                }).orElseThrow(() -> this.initFoodNotFoundById(id));
+        return this.repository.findById(id)
+                .map(data -> {
+                    data.setName(request.name());
+                    data.setImage(request.image());
+                    data.setValue(request.value());
+                    data.setType(request.type());
+                    return this.mapper.toResponse(data);
+                })
+                .orElseThrow(() -> this.FoodNotFound(id));
     }
 
     @Override
-    @Transactional
     public void deleteFoodById(Long id) {
-        this.repositoryFood.getFoodById(id, Status.ACTIVE)
+        this.repository.findById(id)
                 .ifPresentOrElse(
-                        food -> this.repositoryFood.safeDelete(food.getFoodNumber(), Status.INACTIVE),
-                        () -> { throw this.initFoodNotFoundById(id); }
-                );
+                        this.repository::delete,
+                        () -> { throw this.FoodNotFound(id); });
     }
 
-    private FoodNotFound initFoodNotFoundById(Long id) {
-        return new FoodNotFound(String.format("Food with id %s not found!", id));
+    private FoodNotFound FoodNotFound(Long id) {
+        return new FoodNotFound(String.format("User with id %d not found!", id));
     }
 }

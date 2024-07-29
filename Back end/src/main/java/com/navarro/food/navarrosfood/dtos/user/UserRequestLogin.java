@@ -5,6 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UserRequestLogin(
-        @NotNull @NotBlank @Size(max = 30) String login,
+        @NotNull @NotBlank @Size(max = 30) String username,
         @NotNull @NotBlank @Size(max = 20) String password) {
 }
