@@ -10,7 +10,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
+export class AuthService {
   private readonly url: string = 'http://localhost:8080/auth';
 
   constructor(private http: HttpClient) {}

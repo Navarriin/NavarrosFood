@@ -4,7 +4,7 @@ import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.dtos.user.UserRequestUpdate;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
 import com.navarro.food.navarrosfood.enums.Status;
-import com.navarro.food.navarrosfood.exception.UserNotFound;
+import com.navarro.food.navarrosfood.exception.NotFound;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.ServiceUser;
 import jakarta.transaction.Transactional;
@@ -65,7 +65,7 @@ public class ServiceUserImpl implements ServiceUser {
         return this.passwordEncoder.encode(password);
     }
 
-    private UserNotFound userNotFound(String username) {
-        return new UserNotFound(String.format("User with username %s does not exist!", username));
+    private NotFound userNotFound(String username) {
+        return new NotFound(String.format("User with username %s does not exist!", username));
     }
 }

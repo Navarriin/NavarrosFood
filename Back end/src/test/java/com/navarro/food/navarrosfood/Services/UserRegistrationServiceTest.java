@@ -6,7 +6,7 @@ import com.navarro.food.navarrosfood.dtos.user.UserRequestRegister;
 import com.navarro.food.navarrosfood.dtos.user.UserResponseLogReg;
 import com.navarro.food.navarrosfood.exception.IncorrectPassword;
 import com.navarro.food.navarrosfood.exception.UserAlreadyExistsException;
-import com.navarro.food.navarrosfood.exception.UserNotFound;
+import com.navarro.food.navarrosfood.exception.NotFound;
 import com.navarro.food.navarrosfood.infra.security.TokenService;
 import com.navarro.food.navarrosfood.model.UserEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
@@ -94,7 +94,7 @@ public class UserRegistrationServiceTest {
     void loginErrorNotFound(){
         when(this.repository.findByUsername(requestLoginInvalid.login())).thenReturn(Optional.empty());
 
-        var result = assertThrows(UserNotFound.class ,
+        var result = assertThrows(NotFound.class ,
                 () -> this.userRegistrationService.login(requestLoginInvalid));
 
         assertEquals(String.format("User with login %s not found!", requestLoginInvalid.login()), result.getMessage());

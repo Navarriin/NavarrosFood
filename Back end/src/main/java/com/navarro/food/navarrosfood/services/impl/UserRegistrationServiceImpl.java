@@ -6,7 +6,7 @@ import com.navarro.food.navarrosfood.dtos.user.UserResponseLogReg;
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.exception.IncorrectPassword;
 import com.navarro.food.navarrosfood.exception.UserAlreadyExistsException;
-import com.navarro.food.navarrosfood.exception.UserNotFound;
+import com.navarro.food.navarrosfood.exception.NotFound;
 import com.navarro.food.navarrosfood.infra.security.TokenService;
 import com.navarro.food.navarrosfood.model.UserEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
@@ -43,7 +43,7 @@ public class UserRegistrationServiceImpl implements UserRegistrationService {
                         }
                         throw new IncorrectPassword("Incorrect password!");
                 }).orElseThrow(
-                        () -> new UserNotFound(String.format("User with login %s not found!", request.username())));
+                        () -> new NotFound(String.format("User with login %s not found!", request.username())));
     }
 
     @Override
