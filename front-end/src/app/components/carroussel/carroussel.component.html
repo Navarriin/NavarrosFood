@@ -1,5 +1,5 @@
 <p-carousel
-  [value]="cards"
+  [value]="cards()"
   [numVisible]="5"
   [numScroll]="3"
   [circular]="true"
@@ -8,9 +8,10 @@
 >
   <ng-template let-card pTemplate="item">
       <app-card
-        [title]="card.title"
+        [id]="card.id"
+        [name]="card.name"
         [value]="card.value"
-        [linkImg]="card.linkImg"
+        [image]="card.image"
       />
   </ng-template>
 </p-carousel>

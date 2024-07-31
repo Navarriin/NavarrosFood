@@ -1,9 +1,7 @@
 package com.navarro.food.navarrosfood.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.navarro.food.navarrosfood.enums.ConverterStatus;
 import com.navarro.food.navarrosfood.enums.ConverterType;
-import com.navarro.food.navarrosfood.enums.Status;
 import com.navarro.food.navarrosfood.enums.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

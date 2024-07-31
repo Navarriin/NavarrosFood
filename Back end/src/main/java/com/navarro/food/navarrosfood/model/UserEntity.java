@@ -34,7 +34,7 @@ public class UserEntity implements UserDetails {
     @Convert(converter = ConverterStatus.class)
     private Status status = Status.ACTIVE;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE })
     @JoinTable(
             name = "user_food",
             joinColumns = @JoinColumn(name = "user_id"),

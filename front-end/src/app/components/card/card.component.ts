@@ -20,7 +20,8 @@ import { Component, input } from '@angular/core';
   `,
 })
 export class CardComponent {
-  title = input<string>();
+  id = input<number>();
+  name = input<string>();
   value = input<number>();
-  linkImg = input<string>();
+  image = input<string>();
 }

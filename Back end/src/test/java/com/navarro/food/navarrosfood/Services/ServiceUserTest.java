@@ -3,7 +3,7 @@ package com.navarro.food.navarrosfood.services;
 import com.navarro.food.navarrosfood.dtos.mapper.UserMapper;
 import com.navarro.food.navarrosfood.dtos.user.UserRequestUpdate;
 import com.navarro.food.navarrosfood.dtos.user.UserResponse;
-import com.navarro.food.navarrosfood.exception.UserNotFound;
+import com.navarro.food.navarrosfood.exception.NotFound;
 import com.navarro.food.navarrosfood.model.UserEntity;
 import com.navarro.food.navarrosfood.repositories.RepositoryUser;
 import com.navarro.food.navarrosfood.services.impl.ServiceUserImpl;
@@ -81,7 +81,7 @@ class ServiceUserTest {
     void getUserByLoginError(){
         when(this.repositoryUser.findByUsername(userEntity.getUsername())).thenReturn(Optional.empty());
 
-        var result = assertThrows(UserNotFound.class, () -> this.serviceUser.getUserByUsername(userEntity.getUsername()));
+        var result = assertThrows(NotFound.class, () -> this.serviceUser.getUserByUsername(userEntity.getUsername()));
 
         assertEquals(String.format("User with login %s does not exist!", userEntity.getUsername()), result.getMessage());
         verify(this.repositoryUser, times(1)).findByUsername(userEntity.getUsername());
@@ -107,7 +107,7 @@ class ServiceUserTest {
     void updateUserByLoginErrorNotFound() {
         when(this.repositoryUser.findByUsername(userEntity.getUsername())).thenReturn(Optional.empty());
 
-        var result = assertThrows(UserNotFound.class,
+        var result = assertThrows(NotFound.class,
                 () -> this.serviceUser.updateUserByLogin(userEntity.getUsername(), userRequestUpdate));
 
         assertEquals(String.format("User with login %s does not exist!", userEntity.getUsername()), result.getMessage());
@@ -131,7 +131,7 @@ class ServiceUserTest {
     void deleteUserByLoginError() {
         when(this.repositoryUser.findByUsername(userEntity.getUsername())).thenReturn(Optional.empty());
 
-        var result = assertThrows(UserNotFound.class,
+        var result = assertThrows(NotFound.class,
                 () -> this.serviceUser.deleteUserByLogin(userEntity.getUsername()));
 
         assertEquals(String.format("User with login %s does not exist!", userEntity.getUsername()), result.getMessage());

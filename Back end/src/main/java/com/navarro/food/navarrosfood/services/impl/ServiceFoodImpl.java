@@ -3,7 +3,7 @@ package com.navarro.food.navarrosfood.services.impl;
 import com.navarro.food.navarrosfood.dtos.food.FoodRequest;
 import com.navarro.food.navarrosfood.dtos.food.FoodResponse;
 import com.navarro.food.navarrosfood.dtos.mapper.FoodMapper;
-import com.navarro.food.navarrosfood.exception.FoodNotFound;
+import com.navarro.food.navarrosfood.exception.NotFound;
 import com.navarro.food.navarrosfood.repositories.RepositoryFood;
 import com.navarro.food.navarrosfood.services.ServiceFood;
 import jakarta.transaction.Transactional;
@@ -57,14 +57,14 @@ public class ServiceFoodImpl implements ServiceFood {
     }
 
     @Override
+    @Transactional
     public void deleteFoodById(Long id) {
         this.repository.findById(id)
-                .ifPresentOrElse(
-                        this.repository::delete,
+                .ifPresentOrElse(this.repository::delete,
                         () -> { throw this.FoodNotFound(id); });
     }
 
-    private FoodNotFound FoodNotFound(Long id) {
-        return new FoodNotFound(String.format("User with id %d not found!", id));
+    private NotFound FoodNotFound(Long id) {
+        return new NotFound(String.format("User with id %d not found!", id));
     }
 }
