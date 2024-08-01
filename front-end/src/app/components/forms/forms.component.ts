@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -28,15 +28,15 @@ export class FormsComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
+    private authService: AuthService
   ) {
     // Checando se existe param 'login' e setando true ou false para variavel
     this.route.params.subscribe((params) => {
       this.login = params['login'] === 'login';
     });
 
-    // Inicializando Form para login
     this.loginForm = this.formBuilder.group({
       username: [
         null,
@@ -56,7 +56,6 @@ export class FormsComponent {
       ],
     });
 
-    // Inicializando Form para register
     this.registerForm = this.formBuilder.group({
       name: [
         null,
@@ -87,14 +86,16 @@ export class FormsComponent {
   }
 
   loginSubmit(): void {
-    this.authService.login(this.loginForm.value).subscribe((value) => {
-      this.saveStorage(value);
+    this.authService.login(this.loginForm.value).subscribe({
+      next: () => this.router.navigate(['menu']),
+      error: (err) => console.log(err),
     });
   }
 
   registerSubmit(): void {
-    this.authService.register(this.registerForm.value).subscribe((value) => {
-      this.saveStorage(value);
+    this.authService.register(this.registerForm.value).subscribe({
+      next: () => this.router.navigate(['menu']),
+      error: (err) => console.log(err),
     });
   }
 
