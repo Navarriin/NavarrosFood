@@ -12,35 +12,40 @@ import { FoodInterface } from '../../interfaces/food.interface';
   styleUrl: './menu.component.scss',
 })
 export class MenuComponent {
-  protected salted!: FoodInterface[];
-  protected sweet!: FoodInterface[];
+  protected foods!: FoodInterface[];
 
   constructor(private foodsService: FoodsService) {
-    this.initFoods();
+    this.salted();
   }
 
-  private initFoods(): void {
-    this.foodsService.getAllFoods().subscribe({
-      next: (foods: FoodInterface[]) => this.filterFoods(foods),
-      error: (err) => console.log('Erro ao carregar comidas', err),
-    });
+  protected salted(): void {
+    this.lookForFiltredFoods('salted');
   }
 
-  private filterFoods(foods: FoodInterface[]): void {
-    this.salted = [];
-    this.sweet = [];
+  protected sweet(): void {
+    this.lookForFiltredFoods('sweet');
+  }
 
-    for (const food of foods) {
-      const type = food.type.toLowerCase();
-
-      switch (type) {
-        case 'salted':
-          this.salted.push(food);
-          break;
-        case 'sweet':
-          this.sweet.push(food);
-          break;
-      }
+  protected handleKeyDownSalted(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.salted();
     }
+  }
+
+  protected handleKeyDownSweet(event: KeyboardEvent): void {
+    if (event.key === 'Enter' || event.key === ' ') {
+      this.sweet();
+    }
+  }
+
+  private lookForFiltredFoods(filter: string): void {
+    this.foodsService.getAllFoods().subscribe({
+      next: (foods: FoodInterface[]) => {
+        this.foods = foods.filter(
+          (food: FoodInterface) => food.type.toLowerCase() === filter
+        );
+      },
+      error: (err) => console.log(err),
+    });
   }
 }

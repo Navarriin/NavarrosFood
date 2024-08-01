@@ -1,13 +1,24 @@
 <main>
-  <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-3">
-    <div class="col-span-2">
-      <h1>Salgados</h1>
-      <app-carroussel [cards]="salted"/>
+  <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-2">
+    <div class="col-span-2 m-8 card">
+      <div>
+        <h3
+          tabindex="0"
+          (click)="salted()"
+          (keydown)="handleKeyDownSalted($event)"
+        >
+          Salgados
+        </h3>
+        <h3
+          tabindex="0"
+          (click)="sweet()"
+          (keydown)="handleKeyDownSweet($event)"
+        >
+          Doces
+        </h3>
+      </div>
+      <app-carroussel [cards]="foods" />
     </div>
-    <div class="col-span-2">
-      <h1>Doces</h1>
-      <app-carroussel [cards]="sweet" />
-    </div>
-    <app-cart />
+    <app-cart class="row-span-2" />
   </div>
 </main>
