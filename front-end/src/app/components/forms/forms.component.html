@@ -1,43 +1,77 @@
 @if (login) {
-  <h1>Login</h1>
-  <form
-    [formGroup]="loginForm"
-    (ngSubmit)="loginSubmit()"
-    class="flex flex-col gap-2 w-80 p-4"
-  >
-    <label for="username">Username</label>
-    <input type="text" formControlName="username" autocomplete="username" />
-    <label for="password">Senha</label>
-    <input
-      type="password"
-      formControlName="password"
-      autocomplete="current-password"
-    />
-    <button type="submit">Logar</button>
+<div class="form-container">
+  <p class="title">Login</p>
+  <form class="form" [formGroup]="loginForm" (ngSubmit)="loginSubmit()">
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        placeholder=""
+        name="username"
+        formControlName="username"
+        autocomplete="username"
+      />
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        placeholder=""
+        type="password"
+        name="password"
+        formControlName="password"
+        autocomplete="current-password"
+      />
+    </div>
+    <button class="sign mt-6" type="submit">Sign in</button>
   </form>
-  } @else {
-  <h1>Register</h1>
-  <form
-    [formGroup]="registerForm"
-    (ngSubmit)="registerSubmit()"
-    class="flex flex-col gap-2 w-80 p-4"
-  >
-    <label for="name">Nome</label>
-    <input type="text" formControlName="name" autocomplete="name" />
-    <label for="username">Username</label>
-    <input type="text" formControlName="username" autocomplete="username" />
-    <label for="password">Senha</label>
-    <input
-      type="password"
-      formControlName="password"
-      autocomplete="current-password"
-    />
-    <label for="role">Role</label>
-    <select formControlName="role">
-      <option value="ADMIN">Admin</option>
-      <option value="USER">User</option>
-    </select>
-    <button type="submit">Registrar</button>
+</div>
+} @else {
+<div class="form-container">
+  <p class="title">Register</p>
+  <form class="form" [formGroup]="registerForm" (ngSubmit)="registerSubmit()">
+    <div class="input-group">
+      <label for="name">Nome</label>
+      <input
+        type="text"
+        id="name"
+        placeholder=""
+        name="name"
+        formControlName="name"
+        autocomplete="name"
+      />
+    </div>
+    <div class="input-group">
+      <label for="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        placeholder=""
+        name="username"
+        formControlName="username"
+        autocomplete="username"
+      />
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        placeholder=""
+        type="password"
+        name="password"
+        formControlName="password"
+        autocomplete="current-password"
+      />
+    </div>
+    <div class="input-group">
+      <label for="role">Role</label>
+      <select name="role" id="role" formControlName="role">
+        <option value="ADMIN">Admin</option>
+        <option value="USER">User</option>
+      </select>
+    </div>
+    <button class="sign mt-6" type="submit">Sign in</button>
   </form>
-  }
-  
+</div>
+}

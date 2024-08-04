@@ -13,6 +13,7 @@ import {
 export class AuthService {
   private readonly url: string = 'http://localhost:8080/auth';
   private authState = new BehaviorSubject<boolean>(false);
+  private nameSubject = new BehaviorSubject<string>('');
 
   constructor(private http: HttpClient) {}
 
@@ -20,11 +21,16 @@ export class AuthService {
     return this.authState.asObservable();
   }
 
+  get getName(): Observable<string> {
+    return this.nameSubject.asObservable();
+  }
+
   login(body: RequestLogin): Observable<Response> {
     return this.http.post<Response>(`${this.url}/login`, body).pipe(
       tap((response) => {
-        this.saveStorage(response);
         this.authState.next(true);
+        this.saveStorage(response);
+        this.nameSubject.next(response.name);
       })
     );
   }
@@ -32,8 +38,9 @@ export class AuthService {
   register(body: RequestRegister): Observable<Response> {
     return this.http.post<Response>(`${this.url}/register`, body).pipe(
       tap((response) => {
-        this.saveStorage(response);
         this.authState.next(true);
+        this.saveStorage(response);
+        this.nameSubject.next(response.name);
       })
     );
   }
