@@ -8,11 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-interface userDataInt {
-  name: string;
-  token: string;
-}
-
 @Component({
   selector: 'app-forms',
   standalone: true,
@@ -27,8 +22,8 @@ export class FormsComponent {
   protected registerForm: FormGroup;
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {
@@ -86,24 +81,24 @@ export class FormsComponent {
   }
 
   loginSubmit(): void {
-    this.authService.login(this.loginForm.value).subscribe({
-      next: () => this.router.navigate(['menu']),
-      error: (err) => console.log(err),
-    });
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: () => this.router.navigate(['menu']),
+        error: (err) => console.log(err),
+      });
+    } else {
+      this.loginForm.markAllAsTouched();
+    }
   }
 
   registerSubmit(): void {
-    this.authService.register(this.registerForm.value).subscribe({
-      next: () => this.router.navigate(['menu']),
-      error: (err) => console.log(err),
-    });
-  }
-
-  private saveStorage(data: userDataInt): void {
-    const userData: userDataInt = {
-      name: data.name,
-      token: data.token,
-    };
-    localStorage.setItem('userData', JSON.stringify(userData));
+    if (this.registerForm.valid) {
+      this.authService.register(this.registerForm.value).subscribe({
+        next: () => this.router.navigate(['menu']),
+        error: (err) => console.log(err),
+      });
+    } else {
+      this.registerForm.markAllAsTouched();
+    }
   }
 }

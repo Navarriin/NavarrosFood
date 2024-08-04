@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { CarrousselComponent } from '../../components/carroussel/carroussel.component';
-import { CartComponent } from '../../components/cart/cart.component';
 import { FoodsService } from '../../services/foods.service';
+import { CartComponent } from '../../components/cart/cart.component';
 import { FoodInterface } from '../../interfaces/food.interface';
+import { CarrousselComponent } from '../../components/carroussel/carroussel.component';
 
 @Component({
   selector: 'app-menu',
