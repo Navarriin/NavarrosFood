@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  FormBuilder,
   FormGroup,
-  ReactiveFormsModule,
   Validators,
+  FormBuilder,
+  ReactiveFormsModule,
 } from '@angular/forms';
 
 @Component({
@@ -37,7 +37,7 @@ export class FormsComponent {
         null,
         [
           Validators.required,
-          Validators.minLength(5),
+          Validators.minLength(3),
           Validators.maxLength(30),
         ],
       ],
@@ -45,7 +45,7 @@ export class FormsComponent {
         null,
         [
           Validators.required,
-          Validators.minLength(5),
+          Validators.minLength(3),
           Validators.maxLength(20),
         ],
       ],
@@ -64,7 +64,7 @@ export class FormsComponent {
         null,
         [
           Validators.required,
-          Validators.minLength(5),
+          Validators.minLength(3),
           Validators.maxLength(20),
         ],
       ],
@@ -72,7 +72,7 @@ export class FormsComponent {
         null,
         [
           Validators.required,
-          Validators.minLength(5),
+          Validators.minLength(3),
           Validators.maxLength(20),
         ],
       ],

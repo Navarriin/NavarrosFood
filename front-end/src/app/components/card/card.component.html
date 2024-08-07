@@ -2,6 +2,8 @@
 <span class="text-lime-600 pl-2">R$ {{ value() }}</span>
 <h3 class="font-bold pl-2 text-lg">{{ name() }}</h3>
 <button
-  class="bg-primary text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out mx-4 mt-3">
+  class="bg-primary text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out mx-4 mt-3"
+  (click)="toAdd()"
+  >
   Adicionar
 </button>

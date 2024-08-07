@@ -1,9 +1,9 @@
-import { Component, input } from '@angular/core';
-import { CarouselModule } from 'primeng/carousel';
-import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
 import { CardComponent } from '../card/card.component';
 import { FoodInterface } from '../../interfaces/food.interface';
+import { CarouselModule } from 'primeng/carousel';
+import { Component, input } from '@angular/core';
 
 interface Options {
   breakpoint: string;
@@ -21,10 +21,10 @@ interface Options {
 export class CarrousselComponent {
   cards = input.required<FoodInterface[]>();
 
-  responsiveOptions: Options[] | undefined;
+  responsiveOptions: Options[] | undefined;  
 
   constructor() {
-    this.responsiveOptions = [
+    this.responsiveOptions = [  // Ajustar responsividade
       {
         breakpoint: '1199px',
         numVisible: 1,

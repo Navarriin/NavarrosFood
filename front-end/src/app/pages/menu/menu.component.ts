@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FoodsService } from '../../services/foods.service';
+import { FoodsService } from '../../services/foods/foods.service';
 import { CartComponent } from '../../components/cart/cart.component';
 import { FoodInterface } from '../../interfaces/food.interface';
 import { CarrousselComponent } from '../../components/carroussel/carroussel.component';
@@ -41,9 +41,7 @@ export class MenuComponent {
   private lookForFiltredFoods(filter: string): void {
     this.foodsService.getAllFoods().subscribe({
       next: (foods: FoodInterface[]) => {
-        this.foods = foods.filter(
-          (food: FoodInterface) => food.type.toLowerCase() === filter
-        );
+        this.foods = foods.filter((food) => food.type.toLowerCase() === filter);
       },
       error: (err) => console.log(err),
     });

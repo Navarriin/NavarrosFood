@@ -1,11 +1,8 @@
 <img src="logo.svg" alt="Logo do restaurante" class="w-12 h-12" />
 
-@let name = name$ | async;
-@let login = login$ | async;
-
-@if (login) {
+@if (login()) {
 <div class="flex gap-4 items-center">
-  <span>Ola, {{ name }}, ao invés de fazer um pedido, deseja chamar o garçom?</span>
+  <span>Ola, {{ name() }}, ao invés de fazer um pedido, deseja chamar o garçom?</span>
   <button
     class="bg-secondy hover:bg-secondyHover text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
   >

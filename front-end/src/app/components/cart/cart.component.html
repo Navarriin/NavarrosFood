@@ -1,1 +1,6 @@
-<p>cart works!</p>
+@for (food of foods; track food.id) {
+<p>{{ food.name }}</p>
+} @empty {
+<h1>Nenhuma comida adicionada ao carrinho</h1>
+}
+<button (click)="clear()">Esvaziar</button>

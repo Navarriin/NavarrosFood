@@ -1,4 +1,5 @@
 import { Component, input } from '@angular/core';
+import { StatesService } from '../../services/states/states.service';
 
 @Component({
   selector: 'app-card',
@@ -21,7 +22,13 @@ import { Component, input } from '@angular/core';
 })
 export class CardComponent {
   id = input<number>();
-  name = input<string>();
-  value = input<number>();
-  image = input<string>();
+  name = input.required<string>();
+  value = input.required<number>();
+  image = input<string>(); // Adicionar uma imagem default
+
+  constructor(private state: StatesService) {}
+
+  toAdd(): void {
+    this.state.setSelectedCardId(this.id()!);
+  }
 }
