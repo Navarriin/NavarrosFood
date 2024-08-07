@@ -1,13 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { Observable, Subscription } from 'rxjs';
-import { CommonModule } from '@angular/common';
+import { StatesService } from '../../services/states/states.service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [RouterLink],
   templateUrl: './navbar.component.html',
   styles: `
   :host {
@@ -21,25 +19,17 @@ import { CommonModule } from '@angular/common';
 }
   `,
 })
-export class NavbarComponent implements OnInit, OnDestroy {
-  protected login$: Observable<boolean> = new Observable<boolean>();
-  protected name$: Observable<string> = new Observable<string>();
-  private nameSubscription!: Subscription;
+export class NavbarComponent {
+  protected login: Signal<boolean>;
+  protected name: Signal<string>;
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit(): void {
-    this.login$ = this.authService.isLoggedinIn;
-    this.name$ = this.authService.getName;
-  }
-
-  ngOnDestroy(): void {
-    if (this.nameSubscription) {
-      this.nameSubscription.unsubscribe();
-    }
+  constructor(private states: StatesService) {
+    this.login = this.states.getAuthState();
+    this.name = this.states.getNameSubject();
   }
 
   logout(): void {
-    this.authService.logout();
+    localStorage.removeItem('userData');
+    this.states.setAuthState(false);
   }
 }
