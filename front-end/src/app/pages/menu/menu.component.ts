@@ -13,37 +13,37 @@ import { CarrousselComponent } from '../../components/carroussel/carroussel.comp
 })
 export class MenuComponent {
   protected foods!: FoodInterface[];
+  protected filteredFoods!: FoodInterface[];
 
   constructor(private foodsService: FoodsService) {
-    this.salted();
+    this.initFoods();
   }
 
-  protected salted(): void {
-    this.lookForFiltredFoods('salted');
+  protected filterByType(type: string) {
+    this.filterFoods(type);
   }
 
-  protected sweet(): void {
-    this.lookForFiltredFoods('sweet');
-  }
-
-  protected handleKeyDownSalted(event: KeyboardEvent): void {
+  protected handleKeyDown(event: KeyboardEvent, type: string): void {
     if (event.key === 'Enter' || event.key === ' ') {
-      this.salted();
+      this.filterFoods(type);
     }
   }
 
-  protected handleKeyDownSweet(event: KeyboardEvent): void {
-    if (event.key === 'Enter' || event.key === ' ') {
-      this.sweet();
-    }
-  }
-
-  private lookForFiltredFoods(filter: string): void {
+  private initFoods(): void {
     this.foodsService.getAllFoods().subscribe({
-      next: (foods: FoodInterface[]) => {
-        this.foods = foods.filter((food) => food.type.toLowerCase() === filter);
+      next: (food) => {
+        this.foods = food;
+        this.filterFoods('salted');
       },
-      error: (err) => console.log(err),
+      error: (err) => console.log(err), // Tratar erro de requisição
     });
+  }
+
+  private filterFoods(type: string): void {
+    if (this.foods) {
+      this.filteredFoods = this.foods.filter(
+        (food) => food.type.toLowerCase() === type,
+      );
+    }
   }
 }

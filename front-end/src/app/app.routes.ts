@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { ErrorComponent } from './pages/error/error.component';
 import { authGuard } from './guard/auth-guard.guard';
+import { ErrorComponent } from './pages/error/error.component';
+import { controlAdminGuard } from './guard/control-admin.guard';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,14 @@ export const routes: Routes = [
       import('./pages/sing-up/sing-up.component').then(
         (page) => page.SingUpComponent
       ),
+  },
+  {
+    path: 'admin/:controlPanel',
+    loadComponent: () =>
+      import('./pages/control-panel/control-panel.component').then(
+        (page) => page.ControlPanelComponent
+      ),
+      canActivate: [controlAdminGuard]
   },
   {
     path: 'error',

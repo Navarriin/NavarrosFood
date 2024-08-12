@@ -4,9 +4,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormGroup,
   Validators,
-  FormBuilder,
   ReactiveFormsModule,
+  FormControl,
+  NonNullableFormBuilder,
 } from '@angular/forms';
+import {
+  RequestLogin,
+  RequestRegister,
+} from '../../interfaces/requests.interface';
 
 @Component({
   selector: 'app-forms',
@@ -18,14 +23,22 @@ import {
 export class FormsComponent {
   protected login!: boolean;
 
-  protected loginForm: FormGroup;
-  protected registerForm: FormGroup;
+  protected loginForm: FormGroup<{
+    username: FormControl<string>;
+    password: FormControl<string>;
+  }>;
+  protected registerForm: FormGroup<{
+    name: FormControl<string>;
+    username: FormControl<string>;
+    password: FormControl<string>;
+    role: FormControl<string>;
+  }>;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private formBuilder: NonNullableFormBuilder
   ) {
     // Checando se existe param 'login' e setando true ou false para variavel
     this.route.params.subscribe((params) => {
@@ -34,7 +47,7 @@ export class FormsComponent {
 
     this.loginForm = this.formBuilder.group({
       username: [
-        null,
+        '',
         [
           Validators.required,
           Validators.minLength(3),
@@ -42,7 +55,7 @@ export class FormsComponent {
         ],
       ],
       password: [
-        null,
+        '',
         [
           Validators.required,
           Validators.minLength(3),
@@ -53,7 +66,7 @@ export class FormsComponent {
 
     this.registerForm = this.formBuilder.group({
       name: [
-        null,
+        '',
         [
           Validators.required,
           Validators.minLength(5),
@@ -61,7 +74,7 @@ export class FormsComponent {
         ],
       ],
       username: [
-        null,
+        '',
         [
           Validators.required,
           Validators.minLength(3),
@@ -69,20 +82,22 @@ export class FormsComponent {
         ],
       ],
       password: [
-        null,
+        '',
         [
           Validators.required,
           Validators.minLength(3),
           Validators.maxLength(20),
         ],
       ],
-      role: [null, Validators.required],
+      role: ['', Validators.required],
     });
   }
 
   loginSubmit(): void {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
+      const formValue = this.loginForm.value as RequestLogin;
+
+      this.authService.login(formValue).subscribe({
         next: () => this.router.navigate(['menu']),
         error: (err) => console.log(err),
       });
@@ -93,7 +108,9 @@ export class FormsComponent {
 
   registerSubmit(): void {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
+      const formValue = this.registerForm.value as RequestRegister;
+
+      this.authService.register(formValue).subscribe({
         next: () => this.router.navigate(['menu']),
         error: (err) => console.log(err),
       });

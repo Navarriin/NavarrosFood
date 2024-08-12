@@ -29,7 +29,8 @@ export class NavbarComponent {
   }
 
   logout(): void {
-    localStorage.removeItem('userData');
+    localStorage.clear();
     this.states.setAuthState(false);
+    this.states.setSelectedCardId(null);
   }
 }
