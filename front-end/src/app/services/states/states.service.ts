@@ -32,7 +32,7 @@ export class StatesService {
     return this.selectedCardId.asReadonly();
   }
 
-  setSelectedCardId(num: number): void {
+  setSelectedCardId(num: number | null): void {
     this.selectedCardId.set(num);
   }
 
@@ -40,10 +40,10 @@ export class StatesService {
     const userData: string | null = localStorage.getItem('userData');
 
     if (userData) {
-      const parsedData: { name: string; token: string } = JSON.parse(userData);
+      const { name } = JSON.parse(userData) as { name: string };
 
       this.setAuthState(true);
-      this.setNameSubject(parsedData.name);
+      this.setNameSubject(name);
     }
   }
 }

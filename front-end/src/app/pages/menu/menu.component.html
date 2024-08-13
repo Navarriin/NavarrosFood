@@ -4,20 +4,44 @@
       <div>
         <h3
           tabindex="0"
-          (click)="salted()"
-          (keydown)="handleKeyDownSalted($event)"
+          (click)="filterByType('salted')"
+          (keydown)="handleKeyDown($event, 'salted')"
         >
-          Salgados
+          Entradas
         </h3>
         <h3
           tabindex="0"
-          (click)="sweet()"
-          (keydown)="handleKeyDownSweet($event)"
+          (click)="filterByType('sweet')"
+          (keydown)="handleKeyDown($event, 'sweet')"
         >
-          Doces
+          Porções
+        </h3>
+        <h3
+          tabindex="0"
+          (click)="filterByType('main')"
+          (keydown)="handleKeyDown($event, 'main')"
+        >
+          Pratos Principais
+        </h3>
+        <h3
+          tabindex="0"
+          (click)="filterByType('dessert')"
+          (keydown)="handleKeyDown($event, 'dessert')"
+        >
+          Sobremesas
+        </h3>
+        <h3
+          tabindex="0"
+          (click)="filterByType('drink')"
+          (keydown)="handleKeyDown($event, 'drink')"
+        >
+          Bebidas
         </h3>
       </div>
-      <app-carroussel [cards]="foods" />
+      @if (filteredFoods && filteredFoods.length === 0) {
+      <h1>Manutenção</h1>
+      <!-- Ajustar para lista vazia -->
+      } @else {<app-carroussel [cards]="filteredFoods" />}
     </div>
     <app-cart class="row-span-2" />
   </div>

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { FoodInterface } from '../../interfaces/food.interface';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
@@ -9,33 +9,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class FoodsService {
   private readonly url: string = 'http://localhost:8080/api/foods';
 
-  private token: string;
-  private headers: HttpHeaders;
-
-  constructor(private http: HttpClient) {
-    this.token = this.getTokenStorage();
-
-    this.headers = new HttpHeaders({
-      Authorization: `Bearer ${this.token}`,
-    });
-  }
+  private http = inject(HttpClient);
 
   getAllFoods(): Observable<FoodInterface[]> {
-    return this.http.get<FoodInterface[]>(this.url, { headers: this.headers });
+    return this.http.get<FoodInterface[]>(this.url);
   }
 
   getFoodById(id: number): Observable<FoodInterface> {
-    return this.http.get<FoodInterface>(`${this.url}/${id}`, {
-      headers: this.headers,
-    });
-  }
-
-  private getTokenStorage(): string {
-    const userData = localStorage.getItem('userData');
-    if (userData) {
-      const parsedData = JSON.parse(userData);
-      return parsedData.token;
-    }
-    return '';
+    return this.http.get<FoodInterface>(`${this.url}/${id}`);
   }
 }

@@ -25,10 +25,10 @@ export class CartComponent {
   }
 
   private updateListOfFoods(): void {
-    const foodId = this.states.getSelectedCardId();
+    const foodId = this.states.getSelectedCardId()();
 
-    if (foodId() != null) {
-      this.foodsService.getFoodById(foodId()!).subscribe({
+    if (foodId != null) {
+      this.foodsService.getFoodById(foodId).subscribe({
         next: (food) => this.checksFoods(food),
         error: (err) => console.log(err), // Pensar em oq fazer caso der erro
       });
@@ -37,8 +37,8 @@ export class CartComponent {
 
   private checksFoods(food: FoodInterface): void {
     if (this.foods.some((f) => f.id === food.id))
-      console.log('Comida ja adicionada'); // Pensar em oq fazer caso ja existir a comida no carrinho
-    else 
-      this.foods.push(food);
+      console.log('Comida ja adicionada');
+    // Pensar em oq fazer caso ja existir a comida no carrinho
+    else this.foods.push(food);
   }
 }
