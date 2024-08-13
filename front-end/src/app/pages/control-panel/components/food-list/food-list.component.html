@@ -1,8 +1,38 @@
+<h2>Foods</h2>
 
+<form class="form" (submit)="onSubmit($event)">
+  <button type="button">
+    <svg
+      width="17"
+      height="16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-labelledby="search"
+    >
+      <path
+        d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
+        stroke="currentColor"
+        stroke-width="1.333"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </svg>
+  </button>
+  <input
+    class="input"
+    placeholder="Digite a comida que deseja buscar"
+    [formControl]="search"
+    required=""
+    type="text"
+  />
+</form>
 
-@for (food of foods; track $index) {
+@for (food of filteredFoods; track $index) {
 <div class="list">
   <img src="{{ food.image }}" alt="Imagem da comida {{ food.name }}" />
   <h3>{{ food.name }}</h3>
 </div>
+} @empty {
+<h3>Sem comida no Menu =(</h3>
 }

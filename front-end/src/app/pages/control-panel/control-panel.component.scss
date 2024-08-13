@@ -20,7 +20,7 @@
 
   &_grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 15px;
     height: 77vh;
@@ -35,7 +35,7 @@
     }
 
     .chat {
-      grid-column: 2;
+      grid-column: 3;
       grid-row: 1;
       border-radius: 10px;
       box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 8px;
