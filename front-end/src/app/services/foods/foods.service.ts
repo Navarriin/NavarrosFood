@@ -18,4 +18,12 @@ export class FoodsService {
   getFoodById(id: number): Observable<FoodInterface> {
     return this.http.get<FoodInterface>(`${this.url}/${id}`);
   }
+
+  addNewFood(body: FoodInterface) {
+    return this.http.post<FoodInterface>(this.url, body);
+  }
+
+  deleteFoodById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
 }

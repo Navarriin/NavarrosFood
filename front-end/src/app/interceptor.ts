@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { HttpEvent, HttpHandlerFn, HttpRequest } from '@angular/common/http';
 
-export function AuthInterceptor(
+export function Interceptor(
   req: HttpRequest<any>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> {
