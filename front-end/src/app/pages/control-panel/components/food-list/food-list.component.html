@@ -1,5 +1,6 @@
 <h2>Foods</h2>
 
+@if (list) {
 <form class="form" (submit)="onSubmit($event)">
   <button type="button">
     <svg
@@ -30,9 +31,79 @@
 
 @for (food of filteredFoods; track $index) {
 <div class="list">
-  <img src="{{ food.image }}" alt="Imagem da comida {{ food.name }}" />
-  <h3>{{ food.name }}</h3>
+  <div class="content">
+    <img src="{{ food.image }}" alt="Imagem da comida {{ food.name }}" />
+    <h3>{{ food.name }}</h3>
+  </div>
+  <div class="btns">
+    <img
+      src="pngs/edit-icon.png"
+      alt="Icon de editar"
+      tabindex="0"
+      (click)="edit()"
+      (keydown)="handleKeyDown($event)"
+    />
+    <img
+      src="pngs/trash-icon.png"
+      alt="Icon de deletar"
+      tabindex="0"
+      (click)="deleteFoodById(food.id!)"
+      (keydown)="handleKeyDown($event)"
+    />
+  </div>
 </div>
 } @empty {
 <h3>Sem comida no Menu =(</h3>
+<button (click)="edit()">add</button>
+} } @else {
+<div class="form-container">
+  <p class="title">
+    {{ this.form.value.id ? "Editar Comida" : "Criar nova comida" }}
+  </p>
+  <form class="formAdd" [formGroup]="form" (submit)="submit()">
+    <div class="input-group">
+      <label for="name">Nome da Comida</label>
+      <input
+        id="name"
+        type="text"
+        name="name"
+        placeholder=""
+        autocomplete="name"
+        formControlName="name"
+      />
+    </div>
+    <div class="input-group">
+      <label for="image">Link da imagem</label>
+      <input
+        id="image"
+        type="text"
+        name="image"
+        placeholder=""
+        formControlName="image"
+      />
+    </div>
+    <div class="input-group">
+      <label for="value">Valor</label>
+      <input
+        id="value"
+        type="text"
+        name="value"
+        placeholder=""
+        formControlName="value"
+      />
+    </div>
+    <div class="input-group">
+      <label for="type">Tipo da Comida</label>
+      <select name="type" id="type" formControlName="type">
+        <option value="ENTRY">Entrada</option>
+        <option value="PORTIONS">Porções</option>
+        <option value="MAIN">Pratos Principais</option>
+        <option value="DESSERT">Sobremesas</option>
+        <option value="DRINKS">Bebidas</option>
+      </select>
+    </div>
+    <button type="submit">Enviar</button>
+  </form>
+  <button (click)="this.list = true">Voltar</button>
+</div>
 }

@@ -2,7 +2,12 @@ import { Component } from '@angular/core';
 import { debounceTime } from 'rxjs';
 import { FoodsService } from '../../../../services/foods/foods.service';
 import { FoodInterface } from '../../../../interfaces/food.interface';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  ReactiveFormsModule,
+  FormBuilder,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-food-list',
@@ -18,13 +23,67 @@ export class FoodListComponent {
   protected search = new FormControl('');
   private timeoutId: any = null;
 
-  constructor(private foodsService: FoodsService) {
+  protected list = true;
+
+  protected form: FormGroup<{
+    id?: FormControl<number | null>;
+    name: FormControl<string | null>;
+    image: FormControl<string | null>;
+    value: FormControl<number | null>;
+    type: FormControl<string | null>;
+  }>;
+
+  constructor(
+    private foodsService: FoodsService,
+    private formBuilder: FormBuilder
+  ) {
     this.initFoods();
     this.initSearch();
+
+    this.form = this.formBuilder.group({
+      // id: [0],
+      name: [''],
+      image: [''],
+      value: [0],
+      type: [''],
+    });
+  }
+
+  protected submit() {
+    if (this.form.valid) {
+      const value = this.form.value as FoodInterface;
+      this.foodsService.addNewFood(value).subscribe({
+        next: (response) => {
+          console.log('foi', response);
+          this.list = true;
+          this.form.reset();
+          this.initFoods();
+        },
+        error: (err) => console.log(err), // Tratar erro
+      });
+    }
   }
 
   protected onSubmit(event: Event): void {
     event.preventDefault();
+  }
+
+  protected edit() {
+    this.list = false;
+
+    // Preencher esse form com os dados daquela food
+    console.log('editando');
+  }
+
+  protected deleteFoodById(id: number) {
+    this.foodsService.deleteFoodById(id).subscribe({
+      next: () => this.initFoods(),
+      error: (err) => console.log(err), // Tratar possivel erro
+    });
+  }
+
+  handleKeyDown(event: Event) {
+    console.log('eids', event);
   }
 
   private initFoods(): void {

@@ -1,6 +1,8 @@
 <div class="flex items-center gap-6">
-  <img src="logo.svg" alt="Logo do restaurante" class="w-12 h-12" />
+  <img src="svgs/logo.svg" alt="Logo do restaurante" class="w-12 h-12" />
+  @if (login()) {
   <h2>{{ name() }}</h2>
+  }
 </div>
 
 @if (login()) {
